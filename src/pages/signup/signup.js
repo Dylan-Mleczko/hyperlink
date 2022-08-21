@@ -137,7 +137,7 @@ const SignUp = (props) => {
               </button>
               <br />
               <div className="lh-copy mt3">
-                <Link to="login" className="details-footer">
+                <Link to={'/login'} id="login" className="details-footer">
                   Already have an account?
                 </Link>
               </div>
