@@ -1,0 +1,21 @@
+/* Nav bar styling */
+
+.nav-bar {
+  background-color: #99d19c;
+  height: 7%;
+}
+
+.nav-button {
+  color: #fffcfc;
+  background-color: #5e625e;
+  font-size: 20px;
+  height: 37px;
+  text-align: center;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+}
