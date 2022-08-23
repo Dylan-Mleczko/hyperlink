@@ -6,73 +6,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import './styles.css';
 import '../../index.css';
 
-const Login = (props) => {
-  const navigate = useNavigate();
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email format').required('Your email is required'),
-      password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
-    }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      navigate('/gallery');
-    },
-  });
-
+const Loginplacehold = (props) => {
   return (
-    <div className="details-container">
-      <main className="details-main">
-        <div className="measure">
-          <h1 className="details-title ">Log In</h1>
-          <form onSubmit={formik.handleSubmit}>
-            <div className="mt3">
-              <label className="black">Email</label>
-              <input
-                type="text"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                placeholder="email"
-                className="input-box-container input-reset"
-              />
-              {formik.errors.email && formik.touched.email && (
-                <p className="input-error">{formik.errors.email}</p>
-              )}
-            </div>
-            <div className="mv3">
-              <label className="black">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                className="input-box-container input-reset"
-                placeholder="Password"
-              />
-              {formik.errors.password && formik.touched.password && (
-                <p className="input-error">{formik.errors.password}</p>
-              )}
-            </div>
-            <div>
-              <button type="submit" id="login" className="solid-buttton">
-                Log In
-              </button>
-              <br />
-              <div className="lh-copy mt3">
-                <Link to="password/reset" className="details-footer">
-                  Forgot your password?
-                </Link>
-              </div>
-            </div>
-          </form>
+    <>
+      <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label-lg">
+          Email
+        </label>
+        <div class="col-sm-3">
+          <input type="email" class="form-control" placeholder="name@email.com.au" />
         </div>
-      </main>
-    </div>
+      </div>
+      <div class="row mb-3">
+        <label for="inputPassword3" class="col-sm-2 col-form-label-lg">
+          Password
+        </label>
+        <div class="col-sm-3">
+          <input type="password" class="form-control" placeholder="Password" />
+        </div>
+      </div>
+    </>
   );
 };
 
-export default Login;
+export default Loginplacehold;
