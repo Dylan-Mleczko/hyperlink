@@ -9,21 +9,9 @@ export const Header = () => {
   const userName = 'Lexi';
 
   return (
-    <nav class="navbar navbar-expand-lg nav-bar">
+    <nav class="navbar navbar-expand-lg nav-bar p-0">
       <div class="container-fluid">
         <a class="navbar-brand fs-2">Hyper_Link</a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
 
         <div class="collapse navbar-collapse d-flex flex-row justify-content-end" id="navbarNav">
           <nav class="navbar">
