@@ -1,45 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-// import 'date-input-polyfill';
+import axios from 'axios';
 
 import './styles.css';
 import '../../index.css';
+import { baseDevelopmentURL } from '../../utils/constants';
 
 const SignUp = (props) => {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const formik = useFormik({
     initialValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
-      dob: '',
       password: '',
       confirmPassword: '',
       occupation: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string()
+      firstName: Yup.string()
         .min(2, 'Mininum 2 characters')
         .max(30, 'Maximum 30 characters')
-        .required('Your name is required'),
+        .required('Your first name is required'),
+      lastName: Yup.string()
+        .min(2, 'Mininum 2 characters')
+        .max(30, 'Maximum 30 characters')
+        .required('Your last name is required'),
       email: Yup.string().email('Invalid email format').required('Your email is required'),
-      dob: Yup.date()
-        .test('age', 'You must be 16 or older', function (dob) {
-          const cutoff = new Date();
-          cutoff.setFullYear(cutoff.getFullYear() - 16);
-          return dob <= cutoff;
-        })
-        .required('You must enter a date of birth'),
+
       password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Password does not match')
         .required('You must enter a password'),
       occupation: Yup.string(),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      navigate('/gallery');
+      try {
+        const user = await axios.post(`${baseDevelopmentURL}/user/new`, {
+          data: {
+            userDetails: { firstName: values.firstName, lastName: values.lastName },
+            authInfo: { email: values.email, password: values.password },
+          },
+        });
+
+        navigate('/gallery');
+      } catch (err) {
+        console.log('yolo', err);
+        setErrorMessage(err.response.data);
+        setError(true);
+      }
     },
   });
 
@@ -50,17 +67,31 @@ const SignUp = (props) => {
           <h1 className="details-title">Sign Up</h1>
           <form onSubmit={formik.handleSubmit}>
             <div className="mt3">
-              <label className="black">Name</label>
+              <label className="black">First Name</label>
               <input
                 type="text"
-                name="name"
-                value={formik.values.name}
+                name="firstName"
+                value={formik.values.firstName}
                 onChange={formik.handleChange}
                 className="input-box-container input-reset"
-                placeholder="Name"
+                placeholder="First Name"
               />
-              {formik.errors.name && formik.touched.name && (
-                <p className="input-error">{formik.errors.name}</p>
+              {formik.errors.firstName && formik.touched.firstName && (
+                <p className="input-error">{formik.errors.firstName}</p>
+              )}
+            </div>
+            <div className="mt3">
+              <label className="black">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                className="input-box-container input-reset"
+                placeholder="Last Name"
+              />
+              {formik.errors.lastName && formik.touched.lastName && (
+                <p className="input-error">{formik.errors.lastName}</p>
               )}
             </div>
 
@@ -76,20 +107,6 @@ const SignUp = (props) => {
               />
               {formik.errors.email && formik.touched.email && (
                 <p className="input-error">{formik.errors.email}</p>
-              )}
-            </div>
-            <div className="mt3">
-              <label className="black">Date of Birth</label>
-              <input
-                placeholder="Date of Birth"
-                type="date"
-                name="dob"
-                value={formik.values.dob}
-                onChange={formik.handleChange}
-                className="input-box-container input-reset"
-              />
-              {formik.errors.dob && formik.touched.dob && (
-                <p className="input-error">{formik.errors.dob}</p>
               )}
             </div>
             <div className="mt3">

@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import './styles.css';
 import '../../index.css';
+import { baseDevelopmentURL } from '../../utils/constants';
 
 const Login = (props) => {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -17,9 +24,21 @@ const Login = (props) => {
       email: Yup.string().email('Invalid email format').required('Your email is required'),
       password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      navigate('/gallery');
+      try {
+        const user = await axios.post(`${baseDevelopmentURL}/login`, {
+          data: {
+            email: values.email,
+            password: values.password,
+          },
+        });
+
+        navigate('/gallery');
+      } catch (err) {
+        setErrorMessage(err.response.data);
+        setError(true);
+      }
     },
   });
 
@@ -56,6 +75,7 @@ const Login = (props) => {
               {formik.errors.password && formik.touched.password && (
                 <p className="input-error">{formik.errors.password}</p>
               )}
+              {error && <p className="input-error">{errorMessage}</p>}
             </div>
             <div>
               <button type="submit" id="login" className="solid-buttton">
@@ -63,7 +83,7 @@ const Login = (props) => {
               </button>
               <br />
               <div className="lh-copy mt3">
-                <Link to="password/reset" className="details-footer">
+                <Link to={'/password/reset'} className="details-footer">
                   Forgot your password?
                 </Link>
               </div>
