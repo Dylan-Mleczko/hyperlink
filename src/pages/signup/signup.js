@@ -44,7 +44,7 @@ const SignUp = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const user = await axios.post(`${baseDevelopmentURL}/user/new`, {
+        const user = await axios.post(`${baseDevelopmentURL}/register`, {
           data: {
             userDetails: { firstName: values.firstName, lastName: values.lastName },
             authInfo: { email: values.email, password: values.password },

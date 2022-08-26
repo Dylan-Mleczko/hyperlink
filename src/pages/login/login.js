@@ -36,7 +36,7 @@ const Login = (props) => {
 
         navigate('/gallery');
       } catch (err) {
-        setErrorMessage(err.response.data);
+        setErrorMessage(err.response.data.message);
         setError(true);
       }
     },
