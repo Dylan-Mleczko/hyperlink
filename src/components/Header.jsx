@@ -1,13 +1,8 @@
 import './header.css';
 
-function isLoggedIn() {
-  return false;
-}
-
-export const Header = () => {
-  const loggedIn = isLoggedIn();
-  const userName = 'Lexi';
-
+export const Header = ({ isLoggedIn }) => {
+  console.log('test', isLoggedIn);
+  const userName = 'lexi';
   return (
     <nav class="navbar navbar-expand-lg nav-bar p-0">
       <div class="container-fluid">
@@ -16,7 +11,7 @@ export const Header = () => {
         <div class="collapse navbar-collapse d-flex flex-row justify-content-end" id="navbarNav">
           <nav class="navbar">
             <form class="container-fluid justify-content-start">
-              {loggedIn ? (
+              {!isLoggedIn ? (
                 <>
                   <a href="/login">
                     <button class="btn nav-button me-2" type="button">
