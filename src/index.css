@@ -4,7 +4,6 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e5f6e6;
 }
 
 code {
@@ -73,15 +72,9 @@ code {
 }
 
 .details-container {
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5rem;
-  background-color: white;
   margin-top: 2rem;
   margin-bottom: 2rem;
   width: 100%;
-  max-width: 32rem;
-  box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.2);
   margin-right: auto;
   margin-left: auto;
 }
