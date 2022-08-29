@@ -46,7 +46,7 @@ const SignUp = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const user = await axios.post(`${baseDevelopmentURL}/register`, {
+        const data = await axios.post(`${baseDevelopmentURL}/register`, {
           data: {
             userDetails: { firstName: values.firstName, lastName: values.lastName },
             authInfo: { email: values.email, password: values.password },
@@ -54,10 +54,10 @@ const SignUp = (props) => {
         });
 
         setLoggedIn(true);
-        navigate('/gallery');
+        setUser(data.data.data.user);
+        navigate('/gallery', { state: { user: data.data.data.user } });
       } catch (err) {
-        console.log('yolo', err);
-        setErrorMessage(err.response.data);
+        setErrorMessage(err.message);
         setError(true);
       }
     },
@@ -153,6 +153,7 @@ const SignUp = (props) => {
                   placeholder="Occupation"
                 />
               </div>
+              {error && <p className="input-error">{errorMessage}</p>}
               <div>
                 <button type="submit" id="signup" className="solid-buttton">
                   Sign Up
