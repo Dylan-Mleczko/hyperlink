@@ -29,7 +29,8 @@ const Login = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const user = await axios.post(`${baseDevelopmentURL}/login`, {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${baseDevelopmentURL}/login`, {
           data: {
             email: values.email,
             password: values.password,
@@ -37,6 +38,7 @@ const Login = (props) => {
         });
         setLoggedIn(true);
         navigate('/gallery');
+        console.log(res.data.user);
       } catch (err) {
         setErrorMessage(err.response.data.message);
         setError(true);

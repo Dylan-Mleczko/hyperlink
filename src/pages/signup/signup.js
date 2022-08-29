@@ -53,8 +53,10 @@ const SignUp = (props) => {
           },
         });
 
-        setLoggedIn(true);
-        navigate('/gallery');
+        // setLoggedIn(true);
+        // navigate('/gallery');
+
+        navigate('/login');
       } catch (err) {
         console.log('yolo', err);
         setErrorMessage(err.response.data);
