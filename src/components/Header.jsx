@@ -32,7 +32,7 @@ export const Header = () => {
               ) : (
                 <>
                   <div className="m-3 fs-5">Hi, {userName}!</div>
-                  <a href="/welcome">
+                  <a href="/">
                     <button class="btn nav-button m-2" type="button">
                       Log out
                     </button>
