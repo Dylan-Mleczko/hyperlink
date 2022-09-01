@@ -52,8 +52,18 @@ const SignUp = (props) => {
             authInfo: { email: values.email, password: values.password },
           },
         });
-        
-        //navigate('/login');
+
+        // to generate the user token and ID and storing in the response
+        const login = await axios.post(`${baseDevelopmentURL}/login`, {
+          data: {
+            email: values.email,
+            password: values.password,
+          },
+        });
+
+        res.data.data.user['id'] = login.data.user.id;
+        res.data.data.user['token'] = login.data.user.token;
+
         setLoggedIn(true);
         setUser(res.data.data.user);
         navigate('/gallery', { state: { user: res.data.data.user } });
