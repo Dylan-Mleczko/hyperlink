@@ -29,14 +29,16 @@ const Login = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const user = await axios.post(`${baseDevelopmentURL}/login`, {
+        const data = await axios.post(`${baseDevelopmentURL}/login`, {
           data: {
             email: values.email,
             password: values.password,
           },
         });
+
         setLoggedIn(true);
-        navigate('/gallery');
+        setUser(data.data.user);
+        navigate('/gallery', { state: { user: data.data.user } });
       } catch (err) {
         setErrorMessage(err.response.data.message);
         setError(true);
