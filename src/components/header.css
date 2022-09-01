@@ -9,3 +9,7 @@
   color: #fffcfc !important;
   background-color: #5e625e !important;
 }
+
+.pointer {
+  cursor: pointer;
+}
