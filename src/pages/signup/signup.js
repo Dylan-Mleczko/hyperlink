@@ -46,16 +46,17 @@ const SignUp = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const data = await axios.post(`${baseDevelopmentURL}/register`, {
+        const res = await axios.post(`${baseDevelopmentURL}/register`, {
           data: {
             userDetails: { firstName: values.firstName, lastName: values.lastName },
             authInfo: { email: values.email, password: values.password },
           },
         });
-
+        
+        //navigate('/login');
         setLoggedIn(true);
-        setUser(data.data.data.user);
-        navigate('/gallery', { state: { user: data.data.data.user } });
+        setUser(res.data.data.user);
+        navigate('/gallery', { state: { user: res.data.data.user } });
       } catch (err) {
         setErrorMessage(err.message);
         setError(true);

@@ -29,7 +29,8 @@ const Login = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        const data = await axios.post(`${baseDevelopmentURL}/login`, {
+ axios.defaults.withCredentials = true;
+        const res = await axios.post(`${baseDevelopmentURL}/login`, {
           data: {
             email: values.email,
             password: values.password,
@@ -37,8 +38,8 @@ const Login = (props) => {
         });
 
         setLoggedIn(true);
-        setUser(data.data.user);
-        navigate('/gallery', { state: { user: data.data.user } });
+        setUser(res.data.user);
+        navigate('/gallery', { state: { user: res.data.user} });
       } catch (err) {
         setErrorMessage(err.response.data.message);
         setError(true);
