@@ -65,6 +65,7 @@ const SignUp = (props) => {
   return (
     <div>
       <Header isLoggedIn={loggedIn} />
+      <h2 class="text-center mt-5 p-1">Sign up to use Hyperlink today!</h2>
       <div className="d-flex justify-content-center details-container">
         <div class="d-flex justify-content-center align-items-center m-5">
           <div>
