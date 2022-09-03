@@ -1,10 +1,20 @@
+import { Link } from 'react-router-dom';
+
 import './header.css';
 
 export const Header = ({ isLoggedIn, userName }) => {
   return (
     <nav className="navbar navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
-        <a className="navbar-brand fs-2">Hyper_Link</a>
+        {isLoggedIn ? (
+          <Link to={'/gallery'} className="pointer navbar-brand fs-2">
+            Hyper_Link
+          </Link>
+        ) : (
+          <a href="/" className="pointer navbar-brand fs-2">
+            Hyper_Link
+          </a>
+        )}
 
         <div
           className="collapse navbar-collapse d-flex flex-row justify-content-end"
@@ -14,16 +24,16 @@ export const Header = ({ isLoggedIn, userName }) => {
             <form className="container-fluid justify-content-start">
               {!isLoggedIn ? (
                 <>
-                  <a href="/login">
+                  <Link to={'/login'}>
                     <button className="btn nav-button me-2" type="button">
                       Log in
                     </button>
-                  </a>
-                  <a href="/signup">
+                  </Link>
+                  <Link to={'/signup'}>
                     <button className="btn nav-button m-2" type="button">
                       Sign up
                     </button>
-                  </a>
+                  </Link>
                 </>
               ) : (
                 <>

@@ -24,7 +24,7 @@ const Login = (props) => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Your email is required'),
-      password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
+      password: Yup.string().required('You must enter a password'),
     }),
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
