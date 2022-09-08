@@ -64,6 +64,12 @@ code {
   margin: 4px 0 8px 0;
 }
 
+.input-success {
+  color: #3dd617;
+  font-size: 12px;
+  margin: 4px 0 8px 0;
+}
+
 ::-webkit-input-placeholder {
   /* WebKit browsers */
   text-transform: none;

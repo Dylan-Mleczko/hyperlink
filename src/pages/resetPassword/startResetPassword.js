@@ -9,39 +9,36 @@ import '../../index.css';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
-const Login = (props) => {
+const StartResestPassword = (props) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Your email is required'),
-      password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
     }),
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        axios.defaults.withCredentials = true;
-
-        const res = await axios.post(`${baseDevelopmentURL}/login`, {
+        const res = await axios.post(`${baseDevelopmentURL}/start/reset`, {
           data: {
             email: values.email,
-            password: values.password,
           },
         });
+        setError(false);
+        setSuccess(true);
+        setSuccessMessage(`Email has been sent successfully to ${values.email} to reset password`);
 
-        setLoggedIn(true);
-        setUser(res.data.user);
-        navigate('/gallery', { state: { user: res.data.user } });
+        //navigate('/password/reset/end');
       } catch (err) {
+        setSuccess(false);
         setErrorMessage(err.response.data.message);
         setError(true);
       }
@@ -50,13 +47,13 @@ const Login = (props) => {
 
   return (
     <div>
-      <Header isLoggedIn={loggedIn} />
+      <Header isLoggedIn={false} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
-            <h1 className="details-title ">Log In</h1>
+            <h1 className="details-title ">Forgot password</h1>
             <form onSubmit={formik.handleSubmit}>
-              <div className="mt3">
+              <div className="mv3">
                 <label className="black">Email</label>
                 <input
                   type="text"
@@ -69,32 +66,13 @@ const Login = (props) => {
                 {formik.errors.email && formik.touched.email && (
                   <p className="input-error">{formik.errors.email}</p>
                 )}
-              </div>
-              <div className="mv3">
-                <label className="black">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  className="input-box-container input-reset"
-                  placeholder="Password"
-                />
-                {formik.errors.password && formik.touched.password && (
-                  <p className="input-error">{formik.errors.password}</p>
-                )}
                 {error && <p className="input-error">{errorMessage}</p>}
+                {success && <p className="input-success">{successMessage}</p>}
               </div>
               <div>
                 <button type="submit" id="login" className="solid-buttton">
-                  Log In
+                  Send email
                 </button>
-                <br />
-                <div className="lh-copy mt3">
-                  <Link to={'/password/start/reset'} className="details-footer">
-                    Forgot your password?
-                  </Link>
-                </div>
               </div>
             </form>
           </div>
@@ -104,4 +82,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default StartResestPassword;
