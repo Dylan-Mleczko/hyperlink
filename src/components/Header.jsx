@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import './header.css';
 
-export const Header = ({ isLoggedIn, userName }) => {
+export const Header = ({ isLoggedIn, userName, token }) => {
   return (
     <nav className="navbar navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
@@ -39,7 +39,11 @@ export const Header = ({ isLoggedIn, userName }) => {
                 <>
                   <div className="m-3 fs-5">Hi, {userName}!</div>
                   <a href="/">
-                    <button className="btn nav-button m-2" type="button">
+                    <button
+                      className="btn nav-button m-2"
+                      type="button"
+                      onClick={logoutUser(token)}
+                    >
                       Log out
                     </button>
                   </a>
