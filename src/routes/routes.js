@@ -6,6 +6,7 @@ import Gallery from '../pages/gallery/gallery';
 import Login from '../pages/login/login';
 import Signup from '../pages/signup/signup';
 import Profile from '../pages/profile/profile';
+import StartResestPassword from '../pages/resetPassword/startResetPassword';
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/password/start/reset" element={<StartResestPassword />} />
       </Routes>
     </BrowserRouter>
   );
