@@ -7,7 +7,11 @@ const Gallery = () => {
 
   return (
     <div>
-      <Header isLoggedIn={true} userName={location?.state?.user?.name?.first} />
+      <Header
+        isLoggedIn={true}
+        userName={location?.state?.user?.name?.first}
+        token={location?.state?.user?.token}
+      />
       <div>
         <h1>hellllo</h1>
       </div>

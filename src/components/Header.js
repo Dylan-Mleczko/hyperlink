@@ -1,8 +1,27 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
+import { baseDevelopmentURL } from '../utils/constants/index';
 import './header.css';
 
 export const Header = ({ isLoggedIn, userName, token }) => {
+  const navigate = useNavigate();
+
+  const logoutUser = async (token) => {
+    const res = await axios.post(`${baseDevelopmentURL}/logout`, {
+      data: {
+        token: token,
+      },
+    });
+
+    if (res.data.message === 'Successfully logged out') {
+      navigate('/');
+    } else {
+      // Display error message
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
@@ -38,15 +57,13 @@ export const Header = ({ isLoggedIn, userName, token }) => {
               ) : (
                 <>
                   <div className="m-3 fs-5">Hi, {userName}!</div>
-                  <a href="/">
-                    <button
-                      className="btn nav-button m-2"
-                      type="button"
-                      onClick={logoutUser(token)}
-                    >
-                      Log out
-                    </button>
-                  </a>
+                  <button
+                    className="btn nav-button m-2"
+                    type="button"
+                    onClick={() => logoutUser(token)}
+                  >
+                    Log out
+                  </button>
                 </>
               )}
             </form>
