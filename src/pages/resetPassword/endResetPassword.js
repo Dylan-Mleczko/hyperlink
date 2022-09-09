@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import './styles.css';
@@ -9,41 +9,39 @@ import '../../index.css';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
-const Login = (props) => {
+const EndResestPassword = (props) => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const [user, setUser] = useState('');
+  const email = searchParams.get('email');
+
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      email: location?.state?.resetSuccess ? location?.state?.email : '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email format').required('Your email is required'),
-      password: Yup.string().required('You must enter a password'),
+      password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password')], 'Password does not match')
+        .required('You must enter a password'),
     }),
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        axios.defaults.withCredentials = true;
-
-        const res = await axios.post(`${baseDevelopmentURL}/login`, {
+        await axios.post(`${baseDevelopmentURL}/end/reset`, {
           data: {
-            email: values.email,
+            email: email,
             password: values.password,
           },
         });
 
-        setLoggedIn(true);
-        setUser(res.data.user);
-        navigate('/gallery', { state: { user: res.data.user } });
+        navigate('/login', { state: { email: email, resetSuccess: true } });
       } catch (err) {
-        setErrorMessage(err.response.data.message);
+        setErrorMessage(err.message);
         setError(true);
       }
     },
@@ -51,27 +49,13 @@ const Login = (props) => {
 
   return (
     <div>
-      <Header isLoggedIn={loggedIn} />
+      <Header isLoggedIn={false} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
-            <h1 className="details-title ">Log In</h1>
+            <h1 className="details-title ">Reset password</h1>
             <form onSubmit={formik.handleSubmit}>
               <div className="mt3">
-                <label className="black">Email</label>
-                <input
-                  type="text"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  placeholder="email"
-                  className="input-box-container input-reset"
-                />
-                {formik.errors.email && formik.touched.email && (
-                  <p className="input-error">{formik.errors.email}</p>
-                )}
-              </div>
-              <div className="mv3">
                 <label className="black">Password</label>
                 <input
                   type="password"
@@ -84,18 +68,26 @@ const Login = (props) => {
                 {formik.errors.password && formik.touched.password && (
                   <p className="input-error">{formik.errors.password}</p>
                 )}
+              </div>
+              <div className="mv3">
+                <label className="black">Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  className="input-box-container input-reset"
+                  placeholder="Confirm Password"
+                />
+                {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+                  <p className="input-error">{formik.errors.confirmPassword}</p>
+                )}{' '}
                 {error && <p className="input-error">{errorMessage}</p>}
               </div>
               <div>
                 <button type="submit" id="login" className="solid-buttton">
-                  Log In
+                  Reset Password
                 </button>
-                <br />
-                <div className="lh-copy mt3">
-                  <Link to={'/password/start/reset'} className="details-footer">
-                    Forgot your password?
-                  </Link>
-                </div>
               </div>
             </form>
           </div>
@@ -105,4 +97,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default EndResestPassword;
