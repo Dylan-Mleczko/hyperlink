@@ -41,7 +41,6 @@ const SignUp = (props) => {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Password does not match')
         .required('You must enter a password'),
-      occupation: Yup.string(),
     }),
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -139,7 +138,7 @@ const SignUp = (props) => {
                   <p className="input-error">{formik.errors.password}</p>
                 )}
               </div>
-              <div className="mt3">
+              <div className="mv3">
                 <label className="black">Confirm Password</label>
                 <input
                   type="password"
@@ -152,17 +151,6 @@ const SignUp = (props) => {
                 {formik.errors.confirmPassword && formik.touched.confirmPassword && (
                   <p className="input-error">{formik.errors.confirmPassword}</p>
                 )}
-              </div>
-              <div className="mv3">
-                <label className="black">Occupation</label>
-                <input
-                  type="text"
-                  name="occupation"
-                  value={formik.values.occupation}
-                  onChange={formik.handleChange}
-                  className="input-box-container input-reset"
-                  placeholder="Occupation"
-                />
               </div>
               {error && <p className="input-error">{errorMessage}</p>}
               <div>
