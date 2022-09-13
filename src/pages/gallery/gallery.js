@@ -7,18 +7,42 @@ import { baseDevelopmentURL } from '../../utils/constants';
 
 const Gallery = () => {
   const location = useLocation();
-  var tags = [{ name: 'hello' }, { name: 'world' }];
-  const [data, setData] = useState();
+
+  const [tags, setTags] = useState();
+  const [collections, setCollections] = useState();
   const [isBusy, setBusy] = useState(true);
+
+  // retrieve tags
   useEffect(() => {
     const fetchData = async () => {
-      // setBusy(true);
+      const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
+      axios
+        .get(`${baseDevelopmentURL}/tag/all`, { withCredentials: true })
+        .then((response) => {
+          setBusy(false);
+          setTags(response.data.data.tags);
+          console.log(response.data.data.tags);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    if (isBusy) {
+      fetchData();
+    }
+  }, []);
+
+  console.log(tags);
+
+  // retrieve collections
+  useEffect(() => {
+    const fetchData = async () => {
       const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
       axios
         .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
         .then((response) => {
           setBusy(false);
-          setData(response.data.data.collections);
+          setCollections(response.data.data.collections);
           console.log(response.data.data.collections);
         })
         .catch((error) => {
@@ -29,6 +53,7 @@ const Gallery = () => {
       fetchData();
     }
   }, []);
+
   return (
     <div>
       <Header
@@ -36,16 +61,7 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <div>
-        {isBusy ? (
-          <h1>Loading.....</h1>
-        ) : (
-          data.map((value) => {
-            return <p key={value._id}>{value._id}</p>;
-          })
-        )}
-      </div>
-      <SelectedTags tagNames={tags}></SelectedTags>
+      <div>{isBusy ? <h1>Loading.....</h1> : <SelectedTags tagNames={tags}></SelectedTags>}</div>
     </div>
   );
 };
