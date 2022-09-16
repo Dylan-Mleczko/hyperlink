@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import { baseDevelopmentURL } from '../utils/constants/index';
+import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import './header.css';
 
-export const Header = ({ isLoggedIn, userName, token }) => {
+export const Header = ({ isLoggedIn, userName, token, page }) => {
   const navigate = useNavigate();
 
   const logoutUser = async (token) => {
@@ -43,16 +43,32 @@ export const Header = ({ isLoggedIn, userName, token }) => {
             <form className="container-fluid justify-content-start">
               {!isLoggedIn ? (
                 <>
-                  <Link to={'/login'}>
-                    <button className="btn nav-button me-2" type="button">
-                      Log in
-                    </button>
-                  </Link>
-                  <Link to={'/signup'}>
-                    <button className="btn nav-button m-2" type="button">
-                      Sign up
-                    </button>
-                  </Link>
+                  {page === SIGNUP ? (
+                    <Link to={'/login'}>
+                      <button className="btn nav-button me-2" type="button">
+                        Log in
+                      </button>
+                    </Link>
+                  ) : page === LOGIN ? (
+                    <Link to={'/signup'}>
+                      <button className="btn nav-button m-2" type="button">
+                        Sign up
+                      </button>
+                    </Link>
+                  ) : (
+                    <>
+                      <Link to={'/login'}>
+                        <button className="btn nav-button me-2" type="button">
+                          Log in
+                        </button>
+                      </Link>
+                      <Link to={'/signup'}>
+                        <button className="btn nav-button m-2" type="button">
+                          Sign up
+                        </button>
+                      </Link>
+                    </>
+                  )}
                 </>
               ) : (
                 <>

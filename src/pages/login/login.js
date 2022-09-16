@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './styles.css';
 import '../../index.css';
-import { baseDevelopmentURL } from '../../utils/constants';
+import { baseDevelopmentURL, LOGIN } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
 const Login = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const id = 'dummy';
 
   const [user, setUser] = useState('');
   const [error, setError] = useState(false);
@@ -49,9 +52,25 @@ const Login = (props) => {
     },
   });
 
+  useEffect(() => {
+    const notify = () =>
+      toast.success('Your password has been successfully reset!', {
+        position: 'top-center',
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: id,
+      });
+
+    location?.state?.resetSuccess && notify();
+  }, []);
+
   return (
     <div>
-      <Header isLoggedIn={loggedIn} />
+      <Header isLoggedIn={loggedIn} page={LOGIN} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
