@@ -1,6 +1,7 @@
 import { React } from 'react';
 import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
+import { NewCollection } from '../../components/newCollection/NewCollection';
 
 const Gallery = () => {
   const location = useLocation();
