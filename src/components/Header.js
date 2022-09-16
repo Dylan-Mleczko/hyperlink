@@ -37,7 +37,7 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg nav-bar p-0">
+    <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
         {isLoggedIn ? (
           <Link to={'/gallery'} className="pointer navbar-brand fs-2">
