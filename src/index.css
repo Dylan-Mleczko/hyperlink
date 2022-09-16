@@ -23,6 +23,7 @@
   -moz-osx-font-smoothing: grayscale;
   background-color: #d9f0da;
   height: 100%;
+  padding-top: 80px;
 }
 
 code {

@@ -1,29 +1,43 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import './header.css';
 
 export const Header = ({ isLoggedIn, userName, token, page }) => {
   const navigate = useNavigate();
+  const id = 'logout';
 
   const logoutUser = async (token) => {
-    const res = await axios.post(`${baseDevelopmentURL}/logout`, {
-      data: {
-        token: token,
-      },
-    });
+    try {
+      const res = await axios.post(`${baseDevelopmentURL}/logout`, {
+        data: {
+          token: token,
+        },
+      });
 
-    if (res.data.message === 'Successfully logged out') {
-      navigate('/');
-    } else {
-      // Display error message
+      if (res.data.message === 'Successfully logged out') {
+        navigate('/');
+      }
+    } catch (err) {
+      toast.error(err.response.data, {
+        position: 'top-center',
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: id,
+      });
     }
   };
 
   return (
-    <nav className="navbar navbar-expand-lg nav-bar p-0">
+    <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
         {isLoggedIn ? (
           <Link to={'/gallery'} className="pointer font-regular navbar-brand fs-2">
