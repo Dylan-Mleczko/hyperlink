@@ -69,7 +69,7 @@ const Login = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="body">
       <Header isLoggedIn={loggedIn} page={LOGIN} />
       <div className="details-container">
         <main className="details-main">
