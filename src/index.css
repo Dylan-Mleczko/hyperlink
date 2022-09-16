@@ -22,8 +22,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #d9f0da;
-  height: 100%;
   padding-top: 80px;
+  height: 100vh;
 }
 
 code {
