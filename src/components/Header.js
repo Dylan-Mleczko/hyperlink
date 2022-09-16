@@ -40,11 +40,11 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
     <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
         {isLoggedIn ? (
-          <Link to={'/gallery'} className="pointer navbar-brand fs-2">
+          <Link to={'/gallery'} className="pointer font-regular navbar-brand fs-2">
             Hyper_Link
           </Link>
         ) : (
-          <a href="/" className="pointer navbar-brand fs-2">
+          <a href="/" className="pointer font-regular navbar-brand fs-2">
             Hyper_Link
           </a>
         )}
@@ -59,25 +59,25 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
                 <>
                   {page === SIGNUP ? (
                     <Link to={'/login'}>
-                      <button className="btn nav-button me-2" type="button">
+                      <button className="btn font-regular nav-button me-2" type="button">
                         Log in
                       </button>
                     </Link>
                   ) : page === LOGIN ? (
                     <Link to={'/signup'}>
-                      <button className="btn nav-button m-2" type="button">
+                      <button className="btn font-regular nav-button m-2" type="button">
                         Sign up
                       </button>
                     </Link>
                   ) : (
                     <>
                       <Link to={'/login'}>
-                        <button className="btn nav-button me-2" type="button">
+                        <button className="btn font-regular nav-button me-2" type="button">
                           Log in
                         </button>
                       </Link>
                       <Link to={'/signup'}>
-                        <button className="btn nav-button m-2" type="button">
+                        <button className="btn font-regular nav-button m-2" type="button">
                           Sign up
                         </button>
                       </Link>
@@ -88,7 +88,7 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
                 <>
                   <div className="m-3 fs-5">Hi, {userName}!</div>
                   <button
-                    className="btn nav-button m-2"
+                    className="btn font-regular nav-button m-2"
                     type="button"
                     onClick={() => logoutUser(token)}
                   >

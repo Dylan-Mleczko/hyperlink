@@ -6,7 +6,7 @@ const Gallery = () => {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="body">
       <Header
         isLoggedIn={true}
         userName={location?.state?.user?.name?.first}

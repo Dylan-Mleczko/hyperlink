@@ -74,7 +74,7 @@ const SignUp = (props) => {
   });
 
   return (
-    <div>
+    <div className="body">
       <Header isLoggedIn={loggedIn} page={SIGNUP} />
       <div className="details-container">
         <main className="details-main">
