@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './styles.css';
 import '../../index.css';
-import { baseDevelopmentURL } from '../../utils/constants';
+import { baseDevelopmentURL, LOGIN } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
 const Login = (props) => {
@@ -70,7 +70,7 @@ const Login = (props) => {
 
   return (
     <div>
-      <Header isLoggedIn={loggedIn} />
+      <Header isLoggedIn={loggedIn} page={LOGIN} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
