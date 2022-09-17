@@ -80,7 +80,7 @@ const SignUp = (props) => {
         <main className="details-main">
           <div className="measure">
             <h1 className="details-title">Sign Up</h1>
-            <form onSubmit={formik.handleSubmit}>
+            <form onBlur={formik.handleBlur} onSubmit={formik.handleSubmit}>
               <div className="mt3">
                 <label className="black">First Name</label>
                 <input
@@ -113,7 +113,7 @@ const SignUp = (props) => {
               <div className="mt3">
                 <label className="black">Email</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}

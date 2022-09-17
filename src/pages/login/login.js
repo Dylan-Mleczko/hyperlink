@@ -75,7 +75,7 @@ const Login = (props) => {
         <main className="details-main">
           <div className="measure">
             <h1 className="details-title ">Log In</h1>
-            <form onSubmit={formik.handleSubmit}>
+            <form onBlur={formik.handleBlur} onSubmit={formik.handleSubmit}>
               <div className="mt3">
                 <label className="black">Email</label>
                 <input
