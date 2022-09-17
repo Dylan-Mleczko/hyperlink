@@ -1,4 +1,4 @@
-import './title.css';
+import './styles.css';
 
 export const Title = ({ text }) => {
   return (
