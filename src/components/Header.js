@@ -7,19 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import './header.css';
 
-export const Header = ({ isLoggedIn, userName, token, page }) => {
+export const Header = ({ page }) => {
   const navigate = useNavigate();
+  const userName = localStorage.getItem('userName');
   const id = 'logout';
 
-  const logoutUser = async (token) => {
+  const logoutUser = async () => {
     try {
-      const res = await axios.post(`${baseDevelopmentURL}/logout`, {
-        data: {
-          token: token,
-        },
-      });
+      const resUsers = await axios.get(`${baseDevelopmentURL}/user/all`, { withCredentials: true });
+      const res = await axios.post(`${baseDevelopmentURL}/logout`, { withCredentials: true });
+      console.log(resUsers.data);
 
       if (res.data.message === 'Successfully logged out') {
+        localStorage.clear();
         navigate('/');
       }
     } catch (err) {
@@ -39,7 +39,7 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
   return (
     <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
-        {isLoggedIn ? (
+        {userName ? (
           <Link to={'/gallery'} className="pointer font-regular navbar-brand fs-2">
             Hyper_Link
           </Link>
@@ -55,7 +55,7 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
         >
           <nav className="navbar">
             <form className="container-fluid justify-content-start">
-              {!isLoggedIn ? (
+              {!userName ? (
                 <>
                   {page === SIGNUP ? (
                     <Link to={'/login'}>
@@ -90,7 +90,7 @@ export const Header = ({ isLoggedIn, userName, token, page }) => {
                   <button
                     className="btn font-regular nav-button m-2"
                     type="button"
-                    onClick={() => logoutUser(token)}
+                    onClick={() => logoutUser()}
                   >
                     Log out
                   </button>

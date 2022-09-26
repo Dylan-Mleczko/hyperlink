@@ -15,7 +15,7 @@ const Welcome = () => {
 
   return (
     <div className="body">
-      <Header isLoggedIn={false} />
+      <Header />
       <div className="mb-2">
         <h1>Welcome to hyper-link</h1>
         <Link to={'/login'} id="login" className="solid-buttton">

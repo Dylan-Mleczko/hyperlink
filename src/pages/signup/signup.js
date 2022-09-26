@@ -90,7 +90,7 @@ const SignUp = (props) => {
 
   return (
     <div className="body">
-      <Header isLoggedIn={loggedIn} page={SIGNUP} />
+      <Header page={SIGNUP} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">

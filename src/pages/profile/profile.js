@@ -4,7 +4,7 @@ import { Header } from '../../components/Header';
 const Profile = () => {
   return (
     <div className="body">
-      <Header isLoggedIn={true} />
+      <Header />
       Hi
     </div>
   );

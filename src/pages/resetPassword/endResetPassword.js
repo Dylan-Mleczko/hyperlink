@@ -49,7 +49,7 @@ const EndResestPassword = (props) => {
 
   return (
     <div className="body">
-      <Header isLoggedIn={false} />
+      <Header />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
