@@ -16,10 +16,8 @@ const Login = (props) => {
   const location = useLocation();
   const id = 'dummy';
 
-  const [user, setUser] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -42,9 +40,11 @@ const Login = (props) => {
           },
         });
 
-        setLoggedIn(true);
-        setUser(res.data.user);
-        navigate('/gallery', { state: { user: res.data.user } });
+        localStorage.setItem('userName', res.data.user.name.first);
+        localStorage.setItem('userId', res.data.user.id);
+        localStorage.setItem('userEmail', res.data.user.email);
+
+        navigate('/gallery');
       } catch (err) {
         setErrorMessage(err.response.data.message);
         setError(true);
@@ -70,7 +70,7 @@ const Login = (props) => {
 
   return (
     <div className="body">
-      <Header isLoggedIn={loggedIn} page={LOGIN} />
+      <Header page={LOGIN} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
