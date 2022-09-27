@@ -14,9 +14,7 @@ export const Header = ({ page }) => {
 
   const logoutUser = async () => {
     try {
-      const resUsers = await axios.get(`${baseDevelopmentURL}/user/all`, { withCredentials: true });
-      const res = await axios.post(`${baseDevelopmentURL}/logout`, { withCredentials: true });
-      console.log(resUsers.data);
+      const res = await axios.get(`${baseDevelopmentURL}/logout`, { withCredentials: true });
 
       if (res.data.message === 'Successfully logged out') {
         localStorage.clear();
