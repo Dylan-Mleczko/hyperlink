@@ -1,9 +1,10 @@
 import { React, useState, useEffect } from 'react';
 import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
-import { SelectedTags } from '../../components/selectedTags/SelectedTags';
+import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
+import { TagStore } from '../../store/TagStore';
 
 const Gallery = () => {
   const location = useLocation();
@@ -11,6 +12,9 @@ const Gallery = () => {
   const [tags, setTags] = useState();
   const [collections, setCollections] = useState();
   const [isBusy, setBusy] = useState(true);
+  // const [selectedTags, setSelectedTags] = useState();
+
+  const selectedTagsStore = TagStore((state) => state.selectedTags);
 
   // retrieve tags
   useEffect(() => {
@@ -21,7 +25,7 @@ const Gallery = () => {
         .then((response) => {
           setBusy(false);
           setTags(response.data.data.tags);
-          console.log(response.data.data.tags);
+          // console.log(response.data.data.tags);
         })
         .catch((error) => {
           console.log(error);
@@ -32,8 +36,6 @@ const Gallery = () => {
     }
   }, []);
 
-  console.log(tags);
-
   // retrieve collections
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +45,6 @@ const Gallery = () => {
         .then((response) => {
           setBusy(false);
           setCollections(response.data.data.collections);
-          console.log(response.data.data.collections);
         })
         .catch((error) => {
           console.log(error);
@@ -61,7 +62,7 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <div>{isBusy ? <h1>Loading.....</h1> : <SelectedTags tagNames={tags}></SelectedTags>}</div>
+      <div>{isBusy ? <h1>Loading.....</h1> : <TagFilterBox tagNames={tags}></TagFilterBox>}</div>
     </div>
   );
 };
