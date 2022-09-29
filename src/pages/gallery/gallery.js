@@ -23,9 +23,8 @@ const Gallery = () => {
       axios
         .get(`${baseDevelopmentURL}/tag/all`, { withCredentials: true })
         .then((response) => {
-          setBusy(false);
           setTags(response.data.data.tags);
-          // console.log(response.data.data.tags);
+          setBusy(false);
         })
         .catch((error) => {
           console.log(error);
@@ -37,23 +36,23 @@ const Gallery = () => {
   }, []);
 
   // retrieve collections
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
-      axios
-        .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
-        .then((response) => {
-          setBusy(false);
-          setCollections(response.data.data.collections);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    if (isBusy) {
-      fetchData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
+  //     axios
+  //       .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
+  //       .then((response) => {
+  //         setBusy(false);
+  //         setCollections(response.data.data.collections);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   };
+  //   if (isBusy) {
+  //     fetchData();
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -62,7 +61,7 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <div>{isBusy ? <h1>Loading.....</h1> : <TagFilterBox tagNames={tags}></TagFilterBox>}</div>
+      <div>{isBusy ? <h1>Loading.....</h1> : <TagFilterBox tags={tags}></TagFilterBox>}</div>
     </div>
   );
 };

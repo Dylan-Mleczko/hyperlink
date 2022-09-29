@@ -1,18 +1,11 @@
 import './styles.css';
 import { Tag } from '../../components/tag/Tag';
 
-export const TagFilterBox = ({ tagNames }) => {
-  // const state = useBearStore()
-
-  const selectTag = () => {
-    console.log('dylannnnnn');
-  };
-
+export const TagFilterBox = ({ tags }) => {
   return (
     <div className="tag-filter-box">
-      {tagNames.map((tag) => (
-        <Tag onsubmit={selectTag} key={tag.name} tagName={tag.name}></Tag>
-        // <button onclick="selectTag()">yahooooo</button>
+      {tags.map((tag) => (
+        <Tag key={tag.name} tag={tag}></Tag>
       ))}
     </div>
   );
