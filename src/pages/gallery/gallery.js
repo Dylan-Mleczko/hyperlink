@@ -1,32 +1,76 @@
-import { React, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
-import { NewCollection } from '../../components/newCollection/NewCollection';
-import { baseDevelopmentURL } from '../../utils/constants/index';
+import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import axios from 'axios';
+import { baseDevelopmentURL } from '../../utils/constants';
+import { TagStore } from '../../store/TagStore';
 
 const Gallery = () => {
   const location = useLocation();
 
+  const [tags, setTags] = useState();
+  const [collections, setCollections] = useState();
+  const [isBusy, setBusy] = useState(true);
+  // const [selectedTags, setSelectedTags] = useState();
+
+  const selectedTagsStore = TagStore((state) => state.selectedTags);
+
+  const filterByTags = (buttonClicked) => {
+    console.log('button clicked', buttonClicked);
+  };
+
+  // retrieve tags
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
+      axios
+        .get(`${baseDevelopmentURL}/tag/all`, { withCredentials: true })
+        .then((response) => {
+          setTags(response.data.data.tags);
+          setBusy(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    if (isBusy) {
+      fetchData();
+    }
+  }, []);
+
+  // retrieve collections
   // useEffect(() => {
-  //   async function fetchData() {
+  //   const fetchData = async () => {
+  //     const url = `${process.env.REACT_APP_API_BASE}/api/v1/endpoint/`;
   //     axios
-  //       .get(`${baseDevelopmentURL}/user/all`, { withCredentials: true })
+  //       .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
   //       .then((response) => {
-  //         console.log(response.data.data.users);
+  //         setBusy(false);
+  //         setCollections(response.data.data.collections);
   //       })
   //       .catch((error) => {
   //         console.log(error);
   //       });
+  //   };
+  //   if (isBusy) {
+  //     fetchData();
   //   }
-  //   fetchData();
   // }, []);
 
   return (
-    <div className="body">
-      <Header />
+    <div>
+      <Header
+        isLoggedIn={true}
+        userName={location?.state?.user?.name?.first}
+        token={location?.state?.user?.token}
+      />
       <div>
-        <h1>hellllo</h1>
+        {isBusy ? (
+          <h1>Loading.....</h1>
+        ) : (
+          <TagFilterBox tags={tags} handleClick={filterByTags}></TagFilterBox>
+        )}
       </div>
     </div>
   );
