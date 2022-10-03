@@ -16,13 +16,13 @@ export const Tag = ({ tag }) => {
   };
 
   return (
-    <div
+    <button
       style={{ background: selectedTagsStore.includes(tag) ? '#A6B9FF' : null }}
       className="tag-box"
       onClick={() => tagClicked()}
     >
       {tag.name}
       {console.log(selectedTagsStore)}
-    </div>
+    </button>
   );
 };

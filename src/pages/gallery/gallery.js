@@ -16,6 +16,10 @@ const Gallery = () => {
 
   const selectedTagsStore = TagStore((state) => state.selectedTags);
 
+  const filterByTags = (buttonClicked) => {
+    console.log('button clicked', buttonClicked);
+  };
+
   // retrieve tags
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +65,13 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <div>{isBusy ? <h1>Loading.....</h1> : <TagFilterBox tags={tags}></TagFilterBox>}</div>
+      <div>
+        {isBusy ? (
+          <h1>Loading.....</h1>
+        ) : (
+          <TagFilterBox tags={tags} handleClick={filterByTags}></TagFilterBox>
+        )}
+      </div>
     </div>
   );
 };

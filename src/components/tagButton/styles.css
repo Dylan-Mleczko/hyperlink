@@ -1,0 +1,18 @@
+.tag-apply-box {
+  box-sizing: border-box;
+
+  position: flex;
+  /* flex-direction: row-reverse; */
+  order: 1;
+  flex: 0 1 auto;
+  align-self: flex-end;
+
+  width: 97px;
+  height: 33px;
+  left: 1082px;
+  top: 471px;
+
+  background: #d9f0da;
+  border: 3px solid #999999;
+  border-radius: 1px;
+}
