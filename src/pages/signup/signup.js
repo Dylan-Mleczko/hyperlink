@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import './styles.css';
 import '../../index.css';
-import { baseDevelopmentURL } from '../../utils/constants';
+import { baseDevelopmentURL, SIGNUP } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
 const SignUp = (props) => {
@@ -35,8 +35,23 @@ const SignUp = (props) => {
         .min(2, 'Mininum 2 characters')
         .max(30, 'Maximum 30 characters')
         .required('Your last name is required'),
-      email: Yup.string().email('Invalid email format').required('Your email is required'),
-
+      email: Yup.string()
+        .email('Invalid email format')
+        .required('Your email is required')
+        .test('Unique Email', 'Email already in use', function duplicateEmail(value) {
+          return new Promise(async (resolve, reject) => {
+            try {
+              await axios.post(`${baseDevelopmentURL}/check/email`, {
+                data: value,
+              });
+              resolve(true);
+            } catch (err) {
+              if (err.response.data.error === 'Email exists') {
+                resolve(false);
+              }
+            }
+          });
+        }),
       password: Yup.string().min(8, 'Minimum 8 characters').required('You must enter a password'),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Password does not match')
@@ -74,13 +89,13 @@ const SignUp = (props) => {
   });
 
   return (
-    <div>
-      <Header isLoggedIn={loggedIn} />
+    <div className="body">
+      <Header page={SIGNUP} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
             <h1 className="details-title">Sign Up</h1>
-            <form onSubmit={formik.handleSubmit}>
+            <form onBlur={formik.handleBlur} onSubmit={formik.handleSubmit}>
               <div className="mt3">
                 <label className="black">First Name</label>
                 <input
@@ -113,7 +128,7 @@ const SignUp = (props) => {
               <div className="mt3">
                 <label className="black">Email</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}

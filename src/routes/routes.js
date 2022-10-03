@@ -7,6 +7,7 @@ import Login from '../pages/login/login';
 import Signup from '../pages/signup/signup';
 import Profile from '../pages/profile/profile';
 import StartResestPassword from '../pages/resetPassword/startResetPassword';
+import EndResestPassword from '../pages/resetPassword/endResetPassword';
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/password/start/reset" element={<StartResestPassword />} />
+        <Route path="/password/end/reset" element={<EndResestPassword />} />
       </Routes>
     </BrowserRouter>
   );

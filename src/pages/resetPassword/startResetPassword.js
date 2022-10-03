@@ -46,8 +46,8 @@ const StartResestPassword = (props) => {
   });
 
   return (
-    <div>
-      <Header isLoggedIn={false} />
+    <div className="body">
+      <Header />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">

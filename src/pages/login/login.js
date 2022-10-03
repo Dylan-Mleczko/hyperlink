@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './styles.css';
 import '../../index.css';
-import { baseDevelopmentURL } from '../../utils/constants';
+import { baseDevelopmentURL, LOGIN } from '../../utils/constants';
 import { Header } from '../../components/Header';
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const id = 'dummy';
 
-  const [user, setUser] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: location?.state?.resetSuccess ? location?.state?.email : '',
       password: '',
     },
     validationSchema: Yup.object({
@@ -38,9 +40,11 @@ const Login = (props) => {
           },
         });
 
-        setLoggedIn(true);
-        setUser(res.data.user);
-        navigate('/gallery', { state: { user: res.data.user } });
+        localStorage.setItem('userName', res.data.user.name.first);
+        localStorage.setItem('userId', res.data.user.id);
+        localStorage.setItem('userEmail', res.data.user.email);
+
+        navigate('/gallery');
       } catch (err) {
         setErrorMessage(err.response.data.message);
         setError(true);
@@ -48,14 +52,30 @@ const Login = (props) => {
     },
   });
 
+  useEffect(() => {
+    const notify = () =>
+      toast.success('Your password has been successfully reset!', {
+        position: 'top-center',
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: id,
+      });
+
+    location?.state?.resetSuccess && notify();
+  }, []);
+
   return (
-    <div>
-      <Header isLoggedIn={loggedIn} />
+    <div className="body">
+      <Header page={LOGIN} />
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
             <h1 className="details-title ">Log In</h1>
-            <form onSubmit={formik.handleSubmit}>
+            <form onBlur={formik.handleBlur} onSubmit={formik.handleSubmit}>
               <div className="mt3">
                 <label className="black">Email</label>
                 <input
