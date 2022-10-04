@@ -22,7 +22,6 @@ export const Tag = ({ tag }) => {
       onClick={() => tagClicked()}
     >
       {tag.name}
-      {console.log(selectedTagsStore)}
     </button>
   );
 };

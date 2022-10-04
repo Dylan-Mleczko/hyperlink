@@ -8,7 +8,7 @@ export const TagFilterBox = ({ tags, handleClick }) => {
       {tags?.map((tag) => (
         <Tag key={tag.name} tag={tag}></Tag>
       ))}
-      <div class="tag-buttons">
+      <div className="tag-buttons">
         <TagButton text="Apply" func={handleClick}></TagButton>
         <TagButton text="Cancel" func={handleClick}></TagButton>
       </div>
