@@ -5,7 +5,7 @@ import { TagButton } from '../../components/tagButton/TagButton';
 export const TagFilterBox = ({ tags, handleClick }) => {
   return (
     <div className="tag-filter-box">
-      {tags.map((tag) => (
+      {tags?.map((tag) => (
         <Tag key={tag.name} tag={tag}></Tag>
       ))}
       <div class="tag-buttons">
