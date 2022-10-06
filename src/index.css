@@ -28,7 +28,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #d9f0da;
   padding-top: 80px;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
 }
 .content {
   width: 80%;

@@ -1,4 +1,5 @@
 import './styles.css';
+import { Tag } from '../../components/tag/Tag';
 
 export const Collection = ({ collection }) => {
   // const tagClicked = () => {
@@ -10,7 +11,17 @@ export const Collection = ({ collection }) => {
   //   console.log('tag', tag.name, 'clicked');
   // };
 
-  return <button className="collection-box">{collection.name}</button>;
-
   // return <p>{collection.name}</p>;
+
+  return (
+    <div>
+      <button className="collection-box">
+        <hr></hr>
+        <p>{collection.name}</p>
+        {collection.tags.map((tag) => (
+          <Tag key={tag.name} tag={tag.name} clickable={false}></Tag>
+        ))}
+      </button>
+    </div>
+  );
 };

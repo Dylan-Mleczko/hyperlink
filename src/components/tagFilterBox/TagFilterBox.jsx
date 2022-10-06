@@ -6,7 +6,7 @@ export const TagFilterBox = ({ tags, handleClick }) => {
   return (
     <div className="tag-filter-box">
       {tags?.map((tag) => (
-        <Tag key={tag.name} tag={tag}></Tag>
+        <Tag key={tag.name} tag={tag.name} clickable={true}></Tag>
       ))}
       <div className="tag-buttons">
         <TagButton text="Apply" func={handleClick}></TagButton>

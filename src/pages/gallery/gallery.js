@@ -1,5 +1,5 @@
 import './styles.css';
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useLayoutEffect } from 'react';
 import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
 import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
@@ -11,49 +11,31 @@ import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 const Gallery = () => {
   const location = useLocation();
 
-  const [tags, setTags] = useState();
-  const [isTagsBusy, setTagsBusy] = useState(true);
-  const selectedTagsStore = TagStore((state) => state.selectedTags);
   const [collections, setCollections] = useState();
-  const [isCollectionsBusy, setCollectionsBusy] = useState(true);
+  const [isBusy, setBusy] = useState(true);
+  const selectedTagsStore = TagStore((state) => state.selectedTags);
 
   const filterByTags = (buttonClicked) => {
     console.log('button clicked', buttonClicked);
   };
 
-  // retrieve tags then collections
+  // retrieve collections
   useEffect(() => {
-    const fetchTags = async () => {
-      axios
-        .get(`${baseDevelopmentURL}/tag/all`, { withCredentials: true })
-        .then((response) => {
-          setTags(response.data.data.tags);
-          setTagsBusy(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
     const fetchCollections = async () => {
       axios
         .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
         .then((response) => {
           setCollections(response.data.data.collections);
-          setCollectionsBusy(false);
+          console.log(response.data.data.collections);
+          setBusy(false);
         })
         .catch((error) => {
           console.log(error);
         });
     };
-    if (isTagsBusy) {
-      fetchTags();
-      // console.log('tags acquired');
-      // console.log(tags);
-    }
-    if (isCollectionsBusy) {
+
+    if (isBusy) {
       fetchCollections();
-      // console.log('collections acquired');
-      // console.log(collections);
     }
   }, []);
 
@@ -65,18 +47,17 @@ const Gallery = () => {
         token={location?.state?.user?.token}
       />
       <div>
-        {isTagsBusy ? (
+        {isBusy ? (
           <h1>Loading.....</h1>
         ) : (
-          <TagFilterBox tags={tags} handleClick={filterByTags}></TagFilterBox>
+          <TagFilterBox
+            tags={collections.map((collection) => collection.tags).flat()}
+            handleClick={filterByTags}
+          ></TagFilterBox>
         )}
       </div>
       <div>
-        {isCollectionsBusy ? (
-          <h1>Loading.....</h1>
-        ) : (
-          <CollectionBox collections={collections}></CollectionBox>
-        )}
+        {isBusy ? <h1>Loading.....</h1> : <CollectionBox collections={collections}></CollectionBox>}
       </div>
     </div>
   );
