@@ -12,11 +12,28 @@ const Gallery = () => {
   const location = useLocation();
 
   const [collections, setCollections] = useState();
+  const [selectedCollections, setSelectedCollections] = useState();
   const [isBusy, setBusy] = useState(true);
-  const selectedTagsStore = TagStore((state) => state.selectedTags);
+  const selectedTags = TagStore((state) => state.selectedTags);
 
-  const filterByTags = (buttonClicked) => {
-    console.log('button clicked', buttonClicked);
+  const tagsFilter = () => {
+    console.log('filtering by tags');
+    setSelectedCollections(
+      collections.filter((collection) => {
+        for (const tag of collection.tags) {
+          if (selectedTags.includes(tag.name)) {
+            return true;
+          }
+        }
+        return false;
+      })
+    );
+    console.log('found', selectedCollections);
+  };
+
+  const removeTagsFilter = () => {
+    console.log('removing filter by tags');
+    setSelectedCollections(collections);
   };
 
   // retrieve collections
@@ -26,6 +43,7 @@ const Gallery = () => {
         .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
         .then((response) => {
           setCollections(response.data.data.collections);
+          setSelectedCollections(response.data.data.collections);
           console.log(response.data.data.collections);
           setBusy(false);
         })
@@ -52,12 +70,17 @@ const Gallery = () => {
         ) : (
           <TagFilterBox
             tags={collections.map((collection) => collection.tags).flat()}
-            handleClick={filterByTags}
+            handleApplyClick={tagsFilter}
+            handleCancelClick={removeTagsFilter}
           ></TagFilterBox>
         )}
       </div>
       <div>
-        {isBusy ? <h1>Loading.....</h1> : <CollectionBox collections={collections}></CollectionBox>}
+        {isBusy ? (
+          <h1>Loading.....</h1>
+        ) : (
+          <CollectionBox collections={selectedCollections}></CollectionBox>
+        )}
       </div>
     </div>
   );

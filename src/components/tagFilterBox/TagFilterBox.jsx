@@ -2,7 +2,7 @@ import './styles.css';
 import { Tag } from '../../components/tag/Tag';
 import { TagButton } from '../../components/tagButton/TagButton';
 
-export const TagFilterBox = ({ tags, handleClick }) => {
+export const TagFilterBox = ({ tags, handleApplyClick, handleCancelClick }) => {
   return (
     <div className="tag-filter-box">
       {tags?.map((tag) => (
@@ -11,8 +11,8 @@ export const TagFilterBox = ({ tags, handleClick }) => {
         </div>
       ))}
       <div className="tag-buttons">
-        <TagButton text="Apply" func={handleClick}></TagButton>
-        <TagButton text="Cancel" func={handleClick}></TagButton>
+        <TagButton text="Apply" func={handleApplyClick}></TagButton>
+        <TagButton text="Cancel" func={handleCancelClick}></TagButton>
       </div>
     </div>
   );
