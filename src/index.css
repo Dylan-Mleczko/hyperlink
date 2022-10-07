@@ -221,3 +221,22 @@ code {
     width: 25%;
   }
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid green;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: green;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: green;
+}
