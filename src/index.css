@@ -28,7 +28,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #d9f0da;
   padding-top: 80px;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
 }
 .content {
   width: 80%;
@@ -219,4 +220,23 @@ code {
   .details-container {
     width: 25%;
   }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid green;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: green;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: green;
 }

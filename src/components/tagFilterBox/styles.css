@@ -3,8 +3,9 @@
 
   position: relative;
   display: flex;
+  padding: 5px;
 
-  top: 50px;
+  top: 100px;
   height: 100px;
   left: 5vw;
   width: 90vw;

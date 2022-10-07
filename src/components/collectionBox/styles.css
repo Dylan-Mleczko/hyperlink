@@ -1,0 +1,16 @@
+.collections {
+  box-sizing: border-box;
+
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  margin-top: 80px;
+
+  top: 50px;
+  left: 5vw;
+  width: 90vw;
+
+  border-color: black;
+}
