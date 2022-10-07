@@ -3,6 +3,7 @@
 
   position: relative;
   display: flex;
+  padding: 5px;
 
   top: 100px;
   height: 100px;
