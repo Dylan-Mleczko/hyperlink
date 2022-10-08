@@ -4,7 +4,7 @@ import { Header } from '../../components/Header';
 import { Title } from '../../components/Title/Title';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { baseDevelopmentURL } from '../../utils/constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -15,8 +15,6 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [error, setError] = useState(false);
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
@@ -35,8 +33,6 @@ const Profile = () => {
             localStorage.setItem('userName', user.name.first);
             localStorage.setItem('userNameLast', user.name.last);
           }
-          setFirstName(localStorage.getItem('userName'));
-          setLastName(localStorage.getItem('userNameLast'));
         })
         .catch((error) => {
           const errCode = error.response.status;
@@ -64,12 +60,33 @@ const Profile = () => {
         .max(30, 'Maximum 30 characters')
         .required('Your last name is required'),
     }),
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      const userDetails = { first_name: values.firstName, last_name: values.lastName };
+      console.log(userDetails);
+      axios
+        .post(`${baseDevelopmentURL}/user/update`, { userDetails }, { withCredentials: true })
+        .then((response) => {
+          const user = response.data.newUser;
+          console.log(user);
+          localStorage.setItem('userName', user.name.first);
+          localStorage.setItem('userNameLast', user.name.last);
+        })
+        .catch((error) => {
+          console.log(error);
+          const errCode = error.response.status;
+          if (errCode === 401) {
+            localStorage.clear();
+            navigate('/');
+          }
+        });
+      // alert(JSON.stringify(values, null, 2));
+      setIsEditMode(false);
+    },
   });
   return (
     <div>
       <Header isLoggedIn={true} />
-      <div class="body">
+      <div className="body">
         <div className="content">
           <Title text={'My Profile'} />
           <button
@@ -122,7 +139,6 @@ const Profile = () => {
                 Confirm
               </button>
             ) : null}
-
             <br />
           </form>
         </div>
