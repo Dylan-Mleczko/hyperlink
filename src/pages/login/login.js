@@ -41,6 +41,7 @@ const Login = (props) => {
         });
 
         localStorage.setItem('userName', res.data.user.name.first);
+        localStorage.setItem('userNameLast', res.data.user.name.last);
         localStorage.setItem('userId', res.data.user.id);
         localStorage.setItem('userEmail', res.data.user.email);
 

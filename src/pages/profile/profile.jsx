@@ -1,51 +1,130 @@
-import { React } from 'react';
+import { React, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Header } from '../../components/Header';
 import { Title } from '../../components/Title/Title';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { baseDevelopmentURL } from '../../utils/constants';
+import { Link, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import axios from 'axios';
+import * as Yup from 'yup';
 // import 'font-awesome/css/font-awesome.min.css';
 import './styles.css';
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const [error, setError] = useState(false);
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = localStorage.getItem('userId');
+      axios
+        .get(`${baseDevelopmentURL}/user`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          const user = response.data.user;
+          if (
+            localStorage.getItem('userName') !== user.name.first ||
+            localStorage.getItem('userNameLast') !== user.name.last
+          ) {
+            localStorage.setItem('userName', user.name.first);
+            localStorage.setItem('userNameLast', user.name.last);
+          }
+          setFirstName(localStorage.getItem('userName'));
+          setLastName(localStorage.getItem('userNameLast'));
+        })
+        .catch((error) => {
+          const errCode = error.response.status;
+          if (errCode === 401) {
+            localStorage.clear();
+            navigate('/');
+          }
+        });
+    };
+    fetchData();
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: localStorage.getItem('userName'),
+      lastName: localStorage.getItem('userNameLast'),
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string()
+        .min(2, 'Mininum 2 characters')
+        .max(30, 'Maximum 30 characters')
+        .required('Your first name is required'),
+      lastName: Yup.string()
+        .min(2, 'Mininum 2 characters')
+        .max(30, 'Maximum 30 characters')
+        .required('Your last name is required'),
+    }),
+    onSubmit: async (values) => {},
+  });
   return (
     <div>
       <Header isLoggedIn={true} />
       <div class="body">
         <div className="content">
           <Title text={'My Profile'} />
-          <div class="info-table">
-            <div class="input-group mb-3">
-              <span class="input-group-text">First name</span>
+          <button
+            onClick={() => {
+              setIsEditMode(true);
+              console.log(isEditMode);
+            }}
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+          <form onSubmit={formik.handleSubmit}>
+            <div className="mt3">
+              <label className="black">First Name</label>
               <input
                 type="text"
-                aria-label="First name"
-                class="form-control"
-                placeholder="user first name"
+                name="firstName"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                disabled={!isEditMode}
+                placeholder="Enter your first name here"
+                className="input-box-container input-reset"
               />
-              <button class="btn btn-outline-secondary" type="button" id="edit-1">
-                <FontAwesomeIcon icon={faPen} />
-              </button>
+              {formik.errors.firstName && formik.touched.firstName && (
+                <p className="input-error">{formik.errors.firstName}</p>
+              )}
             </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">Last name</span>
+            <div className="mt3">
+              <label className="black">Last Name</label>
               <input
                 type="text"
-                aria-label="Last name"
-                class="form-control"
-                placeholder="user last name"
+                name="lastName"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                disabled={!isEditMode}
+                placeholder="Enter your first name here"
+                className="input-box-container input-reset"
               />
-              <button class="btn btn-outline-secondary" type="button" id="edit-2">
-                <FontAwesomeIcon icon={faPen} />
-              </button>
+              {formik.errors.lastName && formik.touched.lastName && (
+                <p className="input-error">{formik.errors.lastName}</p>
+              )}
             </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">Password</span>
-              <input type="password" aria-label="Password" class="form-control" />
-              <button class="btn btn-outline-secondary" type="button" id="edit-3">
-                <FontAwesomeIcon icon={faPen} />
+            {isEditMode ? (
+              <button
+                type="submit"
+                id="login"
+                className="solid-buttton"
+                style={{ marginTop: ' 10px' }}
+                display="false"
+              >
+                Confirm
               </button>
-            </div>
-          </div>
+            ) : null}
+
+            <br />
+          </form>
         </div>
       </div>
     </div>
