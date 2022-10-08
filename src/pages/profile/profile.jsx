@@ -15,11 +15,11 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [error, setError] = useState(false);
+  const [firstName, setFirstName] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const userId = localStorage.getItem('userId');
       axios
         .get(`${baseDevelopmentURL}/user`, {
           withCredentials: true,
@@ -43,7 +43,7 @@ const Profile = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [firstName]);
 
   const formik = useFormik({
     initialValues: {
@@ -70,6 +70,7 @@ const Profile = () => {
           console.log(user);
           localStorage.setItem('userName', user.name.first);
           localStorage.setItem('userNameLast', user.name.last);
+          setFirstName(user.name.first);
         })
         .catch((error) => {
           console.log(error);
