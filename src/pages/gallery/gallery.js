@@ -36,6 +36,31 @@ const Gallery = () => {
     setSelectedCollections(collections);
   };
 
+  const favouriteCollection = async (collection) => {
+    console.log('update collection favourited', collection.name);
+    axios
+      .put(`${baseDevelopmentURL}/collection/${collection._id}`, {
+        withCredentials: true,
+        collectionDetails: { favourite: !collection.favourite },
+      })
+      .then((response) => {
+        const updatedCollection = response.data.data.collection;
+        setCollections(
+          collections.map((collection) => {
+            return collection._id === updatedCollection._id ? updatedCollection : collection;
+          })
+        );
+        setSelectedCollections(
+          collections.map((collection) => {
+            return collection._id === updatedCollection._id ? updatedCollection : collection;
+          })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // retrieve collections
   useEffect(() => {
     const fetchCollections = async () => {
@@ -79,7 +104,10 @@ const Gallery = () => {
         {isBusy ? (
           <h1>Loading.....</h1>
         ) : (
-          <CollectionBox collections={selectedCollections}></CollectionBox>
+          <CollectionBox
+            collections={selectedCollections}
+            favouriteFunction={favouriteCollection}
+          ></CollectionBox>
         )}
       </div>
     </div>
