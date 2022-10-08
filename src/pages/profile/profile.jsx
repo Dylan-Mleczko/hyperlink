@@ -62,12 +62,11 @@ const Profile = () => {
     }),
     onSubmit: async (values) => {
       const userDetails = { first_name: values.firstName, last_name: values.lastName };
-      console.log(userDetails);
+      // console.log(userDetails);
       axios
         .post(`${baseDevelopmentURL}/user/update`, { userDetails }, { withCredentials: true })
         .then((response) => {
           const user = response.data.newUser;
-          console.log(user);
           localStorage.setItem('userName', user.name.first);
           localStorage.setItem('userNameLast', user.name.last);
           setFirstName(user.name.first);
@@ -90,58 +89,61 @@ const Profile = () => {
       <div className="body">
         <div className="content">
           <Title text={'My Profile'} />
-          <button
-            onClick={() => {
-              setIsEditMode(true);
-              console.log(isEditMode);
-            }}
-          >
-            <FontAwesomeIcon icon={faPen} />
-          </button>
-          <form onSubmit={formik.handleSubmit}>
-            <div className="mt3">
-              <label className="black">First Name</label>
-              <input
-                type="text"
-                name="firstName"
-                value={formik.values.firstName}
-                onChange={formik.handleChange}
-                disabled={!isEditMode}
-                placeholder="Enter your first name here"
-                className="input-box-container input-reset"
-              />
-              {formik.errors.firstName && formik.touched.firstName && (
-                <p className="input-error">{formik.errors.firstName}</p>
-              )}
-            </div>
-            <div className="mt3">
-              <label className="black">Last Name</label>
-              <input
-                type="text"
-                name="lastName"
-                value={formik.values.lastName}
-                onChange={formik.handleChange}
-                disabled={!isEditMode}
-                placeholder="Enter your first name here"
-                className="input-box-container input-reset"
-              />
-              {formik.errors.lastName && formik.touched.lastName && (
-                <p className="input-error">{formik.errors.lastName}</p>
-              )}
-            </div>
-            {isEditMode ? (
-              <button
-                type="submit"
-                id="login"
-                className="solid-buttton"
-                style={{ marginTop: ' 10px' }}
-                display="false"
-              >
-                Confirm
-              </button>
-            ) : null}
-            <br />
-          </form>
+          <div className="edit-box">
+            <button
+              className="edit-button"
+              onClick={() => {
+                setIsEditMode(true);
+                console.log(isEditMode);
+              }}
+            >
+              <FontAwesomeIcon icon={faPen} />
+            </button>
+            <form onSubmit={formik.handleSubmit}>
+              <div className="mt3">
+                <label className="black">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  disabled={!isEditMode}
+                  placeholder="Enter your first name here"
+                  className="input-box-container input-reset"
+                />
+                {formik.errors.firstName && formik.touched.firstName && (
+                  <p className="input-error">{formik.errors.firstName}</p>
+                )}
+              </div>
+              <div className="mt3">
+                <label className="black">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  disabled={!isEditMode}
+                  placeholder="Enter your first name here"
+                  className="input-box-container input-reset"
+                />
+                {formik.errors.lastName && formik.touched.lastName && (
+                  <p className="input-error">{formik.errors.lastName}</p>
+                )}
+              </div>
+              {isEditMode ? (
+                <button
+                  type="submit"
+                  id="login"
+                  className="solid-buttton"
+                  style={{ marginTop: ' 10px' }}
+                  display="false"
+                >
+                  Confirm
+                </button>
+              ) : null}
+              <br />
+            </form>
+          </div>
         </div>
       </div>
     </div>
