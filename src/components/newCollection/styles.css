@@ -1,0 +1,9 @@
+.new-box {
+  position: absolute;
+  width: 70%;
+  top: 30%;
+  left: 15%;
+  padding: 10px 10px 10px 10px;
+  border: 2px double black;
+  border-radius: 15px;
+}

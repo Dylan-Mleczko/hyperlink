@@ -7,6 +7,7 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { TagStore } from '../../store/TagStore';
 import { CollectionBox } from '../../components/collectionBox/CollectionBox';
+import { NewCollection } from '../../components/newCollection/NewCollection';
 
 const Gallery = () => {
   const location = useLocation();
@@ -96,6 +97,7 @@ const Gallery = () => {
         token={location?.state?.user?.token}
       />
       <div>
+        <NewCollection></NewCollection>
         {isBusy ? (
           <h1>Loading.....</h1>
         ) : (
