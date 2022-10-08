@@ -84,7 +84,9 @@ export const Header = ({ page }) => {
                 </>
               ) : (
                 <>
-                  <div className="m-3 fs-5">Hi, {userName}!</div>
+                  <Link to={'/profile'} style={{ textDecoration: 'none' }}>
+                    <div className="m-3 fs-5">Hi, {userName}!</div>
+                  </Link>
                   <button
                     className="btn font-regular nav-button m-2"
                     type="button"

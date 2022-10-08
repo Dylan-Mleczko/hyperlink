@@ -31,8 +31,6 @@ const Login = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        axios.defaults.withCredentials = true;
-
         const res = await axios.post(`${baseDevelopmentURL}/login`, {
           data: {
             email: values.email,
@@ -41,6 +39,7 @@ const Login = (props) => {
         });
 
         localStorage.setItem('userName', res.data.user.name.first);
+        localStorage.setItem('userNameLast', res.data.user.name.last);
         localStorage.setItem('userId', res.data.user.id);
         localStorage.setItem('userEmail', res.data.user.email);
 
