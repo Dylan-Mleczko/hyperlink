@@ -1,9 +1,35 @@
 .new-box {
-  position: absolute;
+  /* position: absolute; */
+  /* margin-top: 5rem; */
+  margin: 5rem 1rem auto;
+  position: relative;
   width: 70%;
-  top: 30%;
-  left: 15%;
-  padding: 10px 10px 10px 10px;
+  /* top: 30%; */
+  /* left: 15%; */
+  padding: 1.5rem;
   border: 2px double black;
   border-radius: 15px;
+}
+
+.image {
+  width: 70%;
+  margin: auto;
+}
+
+.image-container {
+  display: flex;
+  margin: 2rem auto;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  margin: 2rem 1rem auto;
+  justify-content: center;
+}
+
+.submit-error {
+  color: #d41a1a;
+  font-size: 1rem;
+  margin: 4px 0 8px 0;
 }
