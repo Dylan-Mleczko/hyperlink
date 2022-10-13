@@ -4,6 +4,7 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  padding-bottom: 6vw;
   gap: 6vw;
 
   margin-top: 80px;

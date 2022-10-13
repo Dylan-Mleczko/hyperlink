@@ -16,8 +16,26 @@ const Gallery = () => {
   const [isBusy, setBusy] = useState(true);
   const selectedTags = TagStore((state) => state.selectedTags);
 
-  const tagsFilter = () => {
+  const updateCollections = async () => {
+    var curCollections = null;
+    await axios
+      .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
+      .then((response) => {
+        setCollections(response.data.data.collections);
+        curCollections = response.data.data.collections;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return curCollections;
+  };
+
+  const handleTagsApply = async () => {
     console.log('filtering by tags');
+
+    // this line causes lots of lag
+    // await updateCollections();
+
     setSelectedCollections(
       collections.filter((collection) => {
         for (const tag of collection.tags) {
@@ -31,31 +49,44 @@ const Gallery = () => {
     console.log('found', selectedCollections);
   };
 
-  const removeTagsFilter = () => {
+  const removeTagsFilter = async () => {
     console.log('removing filter by tags');
+
+    // this line causes lots of lag
+    // await updateCollections();
+
     setSelectedCollections(collections);
+  };
+
+  const favouriteCollection = async (collection) => {
+    console.log('update collection favourited', collection.name);
+    axios
+      .put(`${baseDevelopmentURL}/collection/${collection._id}`, {
+        withCredentials: true,
+        collectionDetails: { favourite: !collection.favourite },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    await updateCollections();
   };
 
   // retrieve collections
   useEffect(() => {
-    const fetchCollections = async () => {
-      axios
-        .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
-        .then((response) => {
-          setCollections(response.data.data.collections);
-          setSelectedCollections(response.data.data.collections);
-          console.log(response.data.data.collections);
-          setBusy(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const initiateCollections = async () => {
+      const curCollections = await updateCollections();
+      setCollections(curCollections);
+      setSelectedCollections(curCollections);
+      setBusy(false);
     };
 
     if (isBusy) {
-      fetchCollections();
+      initiateCollections();
     }
-  }, []);
+  }, [selectedCollections]);
 
   return (
     <div className="body">
@@ -69,8 +100,8 @@ const Gallery = () => {
           <h1>Loading.....</h1>
         ) : (
           <TagFilterBox
-            tags={collections.map((collection) => collection.tags).flat()}
-            handleApplyClick={tagsFilter}
+            collections={collections}
+            handleApplyClick={handleTagsApply}
             handleCancelClick={removeTagsFilter}
           ></TagFilterBox>
         )}
@@ -79,7 +110,10 @@ const Gallery = () => {
         {isBusy ? (
           <h1>Loading.....</h1>
         ) : (
-          <CollectionBox collections={selectedCollections}></CollectionBox>
+          <CollectionBox
+            collections={selectedCollections}
+            favouriteCollection={favouriteCollection}
+          ></CollectionBox>
         )}
       </div>
     </div>
