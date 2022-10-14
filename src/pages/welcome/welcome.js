@@ -8,11 +8,11 @@ import { Header } from '../../components/Header';
 import test from '../../assets/test.png';
 import './styles.css';
 
-useEffect(() => {
-  document.title = 'HyperLink';
-}, []);
-
 const Welcome = () => {
+  useEffect(() => {
+    document.title = 'HyperLink';
+  }, []);
+
   return (
     <div className="body">
       <div className="content">

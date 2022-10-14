@@ -19,6 +19,10 @@ const Gallery = () => {
   const [isBusy, setBusy] = useState(true);
   const selectedTags = TagStore((state) => state.selectedTags);
 
+  useEffect(() => {
+    document.title = 'HyperLink - Gallery';
+  }, []);
+
   const updateCollections = async () => {
     var curCollections = null;
     await axios
