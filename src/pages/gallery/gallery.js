@@ -140,7 +140,9 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <button onClick={newCollectionOnclick}>NewCollection</button>
+      <button onClick={newCollectionOnclick} className="new-collection-button">
+        NewCollection
+      </button>
       {isNewCollection ? (
         <div className="new-collection-container">
           <NewCollection onCancel={handleCancelCreate}></NewCollection>
