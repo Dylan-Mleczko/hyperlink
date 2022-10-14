@@ -1,13 +1,15 @@
-import './styles.css';
 import { React, useState, useEffect, useLayoutEffect } from 'react';
-import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
-import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
+
+import { Header } from '../../components/Header';
+import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { TagStore } from '../../store/TagStore';
 import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
+import './styles.css';
 
 const Gallery = () => {
   const location = useLocation();
@@ -99,7 +101,15 @@ const Gallery = () => {
       <div>
         <NewCollection></NewCollection>
         {isBusy ? (
-          <h1>Loading.....</h1>
+          <ThreeDots
+            height="100"
+            width="100"
+            radius="9"
+            color="green"
+            ariaLabel="three-dots-loading"
+            wrapperStyle
+            wrapperClass="loader"
+          />
         ) : (
           <TagFilterBox
             collections={collections}
@@ -110,7 +120,15 @@ const Gallery = () => {
       </div>
       <div>
         {isBusy ? (
-          <h1>Loading.....</h1>
+          <ThreeDots
+            height="100"
+            width="100"
+            radius="9"
+            color="green"
+            ariaLabel="three-dots-loading"
+            wrapperStyle
+            wrapperClass="loader"
+          />
         ) : (
           <CollectionBox
             collections={selectedCollections}

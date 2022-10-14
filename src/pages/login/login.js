@@ -71,6 +71,7 @@ const Login = (props) => {
   return (
     <div className="body">
       <Header page={LOGIN} />
+      <div className="fix-padding"></div>
       <div className="details-container">
         <main className="details-main">
           <div className="measure">

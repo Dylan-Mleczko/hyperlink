@@ -91,6 +91,7 @@ const SignUp = (props) => {
   return (
     <div className="body">
       <Header page={SIGNUP} />
+      <div className="fix-padding"></div>
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
