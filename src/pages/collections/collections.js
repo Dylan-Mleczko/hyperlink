@@ -2,6 +2,7 @@ import { React } from 'react';
 import { Header } from '../../components/Header';
 import { useLocation } from 'react-router-dom';
 import { Title } from '../../components/Title/Title';
+import { CollectionItem } from '../../components/collectionItem/collectionItem';
 
 const Collections = () => {
   const location = useLocation();
@@ -9,9 +10,9 @@ const Collections = () => {
   return (
     <div className="body">
       <Header />
-      <Title text="Collection Name" />
       <div className="d-flex justify-content-center">
         <div className="table-responsive">
+          <Title text="collection" />
           <table className="table table-light table-hover table-lg align-middle">
             <thead>
               <tr>
@@ -21,61 +22,7 @@ const Collections = () => {
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
-              <tr>
-                <th>example</th>
-                <td>example</td>
-                <td>example</td>
-              </tr>
+              <CollectionItem></CollectionItem>
             </tbody>
           </table>
         </div>
