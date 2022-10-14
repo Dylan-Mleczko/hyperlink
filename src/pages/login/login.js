@@ -31,6 +31,7 @@ const Login = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
+        axios.defaults.withCredentials = true;
         const res = await axios.post(`${baseDevelopmentURL}/login`, {
           data: {
             email: values.email,

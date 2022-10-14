@@ -8,6 +8,7 @@ import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { TagStore } from '../../store/TagStore';
 import { CollectionBox } from '../../components/collectionBox/CollectionBox';
+import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 
 const Gallery = () => {
@@ -98,6 +99,7 @@ const Gallery = () => {
         token={location?.state?.user?.token}
       />
       <div>
+        <NewCollection></NewCollection>
         {isBusy ? (
           <ThreeDots
             height="100"
