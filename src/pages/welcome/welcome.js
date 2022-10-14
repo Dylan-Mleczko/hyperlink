@@ -1,12 +1,16 @@
 import { React } from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Fade, LightSpeed } from 'react-reveal';
 
 import '../../index.css';
 import { Header } from '../../components/Header';
 import test from '../../assets/test.png';
 import './styles.css';
+
+useEffect(() => {
+  document.title = 'HyperLink';
+}, []);
 
 const Welcome = () => {
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -87,6 +87,10 @@ const SignUp = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    document.title = 'HyperLink - Sign Up';
+  }, []);
 
   return (
     <div className="body">

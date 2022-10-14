@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -46,6 +46,10 @@ const EndResestPassword = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    document.title = 'HyperLink - Reset Password';
+  }, []);
 
   return (
     <div className="body">

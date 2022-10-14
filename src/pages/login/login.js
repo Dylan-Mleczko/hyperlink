@@ -66,6 +66,8 @@ const Login = (props) => {
       });
 
     location?.state?.resetSuccess && notify();
+
+    document.title = 'HyperLink - Login';
   }, []);
 
   return (
