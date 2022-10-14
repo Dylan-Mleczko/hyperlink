@@ -10,11 +10,11 @@ export const CollectionItem = () => {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog-lg w-50 modal-dialog-centered">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header header-style">
-              <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">
-                Website Name
+              <h1 class="modal-title text-white fs-5" id="exampleModalLabel">
+                Website name
               </h1>
               <button
                 type="button"
@@ -25,19 +25,19 @@ export const CollectionItem = () => {
             </div>
             <div class="modal-body">description of website</div>
             <div>
-              <a href="#" class="tooltip-test modal-body" title="Tooltip">
-                Website Link
+              <a href="#" data-bs-toggle="tooltip" title="Tooltip" className="modal-body">
+                link to website
               </a>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn" data-bs-dismiss="modal">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
             </div>
           </div>
         </div>
       </div>
-      <tr className="collection">
+      <tr>
         <th>
           <button
             type="button"
