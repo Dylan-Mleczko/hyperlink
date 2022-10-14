@@ -9,6 +9,7 @@ const TagStore = create((set) => ({
         return tag != removeTag;
       }),
     })),
+  clearTags: () => set(() => ({ selectedTags: [] })),
 }));
 
 export { TagStore };

@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-export const NewCollection = ({ isLoggedIn, userName, token, page }) => {
+export const NewCollection = ({ onCancel }) => {
   let user;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -155,6 +155,9 @@ export const NewCollection = ({ isLoggedIn, userName, token, page }) => {
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
             Create Collection
+          </button>
+          <button id="login" className="solid-buttton" onClick={onCancel}>
+            Cancel
           </button>
           <br />
         </div>

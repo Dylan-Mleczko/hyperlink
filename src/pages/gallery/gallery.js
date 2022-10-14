@@ -14,10 +14,13 @@ import './styles.css';
 const Gallery = () => {
   const location = useLocation();
 
-  const [collections, setCollections] = useState();
-  const [selectedCollections, setSelectedCollections] = useState();
+  const [collections, setCollections] = useState([]);
+  const [selectedCollections, setSelectedCollections] = useState([]);
   const [isBusy, setBusy] = useState(true);
   const selectedTags = TagStore((state) => state.selectedTags);
+  const clearTags = TagStore((state) => state.clearTags);
+  const [tags, setTags] = useState([]);
+  const [isNewCollection, setIsNewCollection] = useState(false);
 
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
@@ -30,6 +33,22 @@ const Gallery = () => {
       .then((response) => {
         setCollections(response.data.data.collections);
         curCollections = response.data.data.collections;
+
+        const u_tags = [];
+        curCollections
+          .map((collection) => collection.tags)
+          .flat()
+          .forEach((tag) => {
+            let found = false;
+            u_tags.forEach((utag) => {
+              if (utag.name === tag.name) found = true;
+            });
+            if (!found) {
+              u_tags.push(tag);
+            }
+          });
+        console.log('tags: ', u_tags);
+        setTags(u_tags);
       })
       .catch((error) => {
         console.log(error);
@@ -39,9 +58,10 @@ const Gallery = () => {
 
   const handleTagsApply = async () => {
     console.log('filtering by tags');
-
-    // this line causes lots of lag
-    // await updateCollections();
+    if (selectedTags.length === 0) {
+      setSelectedCollections(collections);
+      return;
+    }
 
     setSelectedCollections(
       collections.filter((collection) => {
@@ -58,27 +78,35 @@ const Gallery = () => {
 
   const removeTagsFilter = async () => {
     console.log('removing filter by tags');
-
-    // this line causes lots of lag
-    // await updateCollections();
-
+    clearTags();
     setSelectedCollections(collections);
   };
 
   const favouriteCollection = async (collection) => {
     console.log('update collection favourited', collection.name);
     axios
-      .put(`${baseDevelopmentURL}/collection/${collection._id}`, {
-        withCredentials: true,
-        collectionDetails: { favourite: !collection.favourite },
-      })
+      .put(
+        `${baseDevelopmentURL}/collection/${collection._id}`,
+        { collectionDetails: { favourite: !collection.favourite } },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(response);
+        updateCollections().then();
       })
       .catch((error) => {
         console.log(error);
       });
-    await updateCollections();
+  };
+
+  const newCollectionOnclick = () => {
+    setIsNewCollection(true);
+  };
+
+  const handleCancelCreate = () => {
+    setIsNewCollection(false);
   };
 
   // retrieve collections
@@ -95,6 +123,16 @@ const Gallery = () => {
     }
   }, [selectedCollections]);
 
+  // refresh favourite icon
+  useEffect(() => {
+    handleTagsApply().then();
+  }, [collections]);
+
+  //after selectedTags changed, to apply tags filter
+  // useEffect(() => {
+  //   handleTagsApply().then();
+  // }, [selectedTags]);
+
   return (
     <div className="body">
       <Header
@@ -102,8 +140,13 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
+      <button onClick={newCollectionOnclick}>NewCollection</button>
+      {isNewCollection ? (
+        <div className="new-collection-container">
+          <NewCollection onCancel={handleCancelCreate}></NewCollection>
+        </div>
+      ) : null}
       <div>
-        <NewCollection></NewCollection>
         {isBusy ? (
           <ThreeDots
             height="100"
@@ -116,7 +159,7 @@ const Gallery = () => {
           />
         ) : (
           <TagFilterBox
-            collections={collections}
+            tags={tags}
             handleApplyClick={handleTagsApply}
             handleCancelClick={removeTagsFilter}
           ></TagFilterBox>
