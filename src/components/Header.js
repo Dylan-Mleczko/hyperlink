@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import './header.css';
+import logo from '../assets/logo.png';
 
 export const Header = ({ page }) => {
   const navigate = useNavigate();
@@ -38,12 +39,14 @@ export const Header = ({ page }) => {
     <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
       <div className="container-fluid">
         {userName ? (
-          <Link to={'/gallery'} className="pointer font-regular navbar-brand fs-2">
-            Hyper_Link
+          <Link to={'/gallery'} className="pointer font-semi-bold navbar-brand fs-2">
+            <img src={logo} height="50" width="50" />
+            HyperLink
           </Link>
         ) : (
-          <a href="/" className="pointer font-regular navbar-brand fs-2">
-            Hyper_Link
+          <a href="/" className="pointer font-semi-bold navbar-brand fs-2">
+            <img src={logo} height="50" width="50" />
+            HyperLink
           </a>
         )}
 
@@ -57,25 +60,25 @@ export const Header = ({ page }) => {
                 <>
                   {page === SIGNUP ? (
                     <Link to={'/login'}>
-                      <button className="btn font-regular nav-button me-2" type="button">
+                      <button className="btn font-semi-bold nav-button me-2" type="button">
                         Log in
                       </button>
                     </Link>
                   ) : page === LOGIN ? (
                     <Link to={'/signup'}>
-                      <button className="btn font-regular nav-button m-2" type="button">
+                      <button className="btn font-semi-bold nav-button m-2" type="button">
                         Sign up
                       </button>
                     </Link>
                   ) : (
                     <>
                       <Link to={'/login'}>
-                        <button className="btn font-regular nav-button me-2" type="button">
+                        <button className="btn font-semi-bold nav-button me-2" type="button">
                           Log in
                         </button>
                       </Link>
                       <Link to={'/signup'}>
-                        <button className="btn font-regular nav-button m-2" type="button">
+                        <button className="btn font-semi-bold nav-button m-2" type="button">
                           Sign up
                         </button>
                       </Link>
@@ -88,7 +91,7 @@ export const Header = ({ page }) => {
                     <div className="m-3 fs-5">Hi, {userName}!</div>
                   </Link>
                   <button
-                    className="btn font-regular nav-button m-2"
+                    className="btn font-semi-bold nav-button m-2"
                     type="button"
                     onClick={() => logoutUser()}
                   >

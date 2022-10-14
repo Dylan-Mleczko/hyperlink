@@ -50,6 +50,7 @@ const EndResestPassword = (props) => {
   return (
     <div className="body">
       <Header />
+      <div className="fix-padding"></div>
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
