@@ -43,6 +43,8 @@ const Profile = () => {
         });
     };
     fetchData();
+
+    document.title = 'HyperLink - Profile';
   }, [firstName]);
 
   const formik = useFormik({
