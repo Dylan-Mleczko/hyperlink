@@ -1,16 +1,18 @@
 .collections {
   box-sizing: border-box;
 
-  position: relative;
+  /* position: relative; */
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 6vw;
+  /* padding-bottom: 6vw; */
   gap: 6vw;
+  justify-content: flex-start;
 
-  margin-top: 80px;
+  margin: 4rem auto;
+  /* margin-top: 80px; */
 
-  top: 50px;
-  left: 5vw;
+  /* top: 50px;
+  left: 5vw; */
   width: 90vw;
 
   border-color: black;

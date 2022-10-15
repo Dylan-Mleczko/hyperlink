@@ -3,3 +3,12 @@
   align-items: center;
   padding-top: 50vh;
 }
+
+.new-collection-container {
+  display: flex;
+  justify-content: center;
+}
+
+.new-collection-button {
+  margin-top: 10rem;
+}

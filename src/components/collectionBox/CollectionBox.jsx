@@ -6,7 +6,7 @@ export const CollectionBox = ({ collections, favouriteCollection }) => {
     <div className="collections">
       {collections.map((collection) => (
         <Collection
-          key={collection.name}
+          key={collection._id}
           collection={collection}
           favouriteCollection={favouriteCollection}
         ></Collection>

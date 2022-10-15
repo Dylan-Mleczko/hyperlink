@@ -1,11 +1,12 @@
 import './styles.css';
 import { TagStore } from '../../store/TagStore';
 
+import { React } from 'react';
+
 export const Tag = ({ tag, clickable }) => {
   const selectedTagsStore = TagStore((state) => state.selectedTags);
   const selectTag = TagStore((state) => state.selectTag);
   const deselectTag = TagStore((state) => state.deselectTag);
-  // console.log(tag);
 
   const tagClicked = () => {
     if (selectedTagsStore.includes(tag)) {
@@ -13,7 +14,6 @@ export const Tag = ({ tag, clickable }) => {
     } else {
       selectTag(tag);
     }
-    console.log('tag', tag, 'clicked');
   };
 
   return (
