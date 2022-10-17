@@ -10,6 +10,7 @@ const Collections = () => {
   return (
     <div className="body">
       <Header />
+      <div className="fix-padding"></div>
       <div className="d-flex justify-content-center">
         <div className="table-responsive">
           <Title text="collection" />
