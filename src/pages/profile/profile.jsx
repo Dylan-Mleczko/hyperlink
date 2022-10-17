@@ -88,6 +88,7 @@ const Profile = () => {
   return (
     <div>
       <Header isLoggedIn={true} />
+      <div className="fix-padding"></div>
       <div className="body">
         <div className="content">
           <Title text={'My Profile'} />

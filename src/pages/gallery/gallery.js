@@ -140,6 +140,7 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
+      <div className="fix-padding"></div>
       <button onClick={newCollectionOnclick} className="new-collection-button">
         NewCollection
       </button>
