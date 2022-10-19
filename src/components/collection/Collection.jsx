@@ -40,7 +40,7 @@ export const Collection = ({ collection, favouriteCollection }) => {
             ></img>
           </button>
           <div className="tags-container">
-            {collection.tags.map((tag) => (
+            {collection?.tags?.map((tag) => (
               <Tag key={tag.name} tag={tag.name} clickable={false}></Tag>
             ))}
           </div>

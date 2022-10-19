@@ -29,14 +29,21 @@ const Gallery = () => {
   const updateCollections = async () => {
     var curCollections = null;
     await axios
-      .get(`${baseDevelopmentURL}/collection/all`, { withCredentials: true })
+      .get(`${baseDevelopmentURL}/collection/all`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+        // withCredentials: true,
+      })
       .then((response) => {
         setCollections(response.data.data.collections);
         curCollections = response.data.data.collections;
 
         const u_tags = [];
         curCollections
-          .map((collection) => collection.tags)
+          ?.map((collection) => collection.tags)
           .flat()
           .forEach((tag) => {
             let found = false;
@@ -89,7 +96,11 @@ const Gallery = () => {
         `${baseDevelopmentURL}/collection/${collection._id}`,
         { collectionDetails: { favourite: !collection.favourite } },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
         }
       )
       .then((response) => {

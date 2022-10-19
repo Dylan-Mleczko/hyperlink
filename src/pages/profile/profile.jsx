@@ -22,7 +22,9 @@ const Profile = () => {
     const fetchData = async () => {
       axios
         .get(`${baseDevelopmentURL}/user`, {
-          withCredentials: true,
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
         })
         .then((response) => {
           const user = response.data.user;
@@ -66,7 +68,15 @@ const Profile = () => {
       const userDetails = { first_name: values.firstName, last_name: values.lastName };
       // console.log(userDetails);
       axios
-        .post(`${baseDevelopmentURL}/user/update`, { userDetails }, { withCredentials: true })
+        .post(
+          `${baseDevelopmentURL}/user/update`,
+          { userDetails },
+          {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          }
+        )
         .then((response) => {
           const user = response.data.newUser;
           localStorage.setItem('userName', user.name.first);

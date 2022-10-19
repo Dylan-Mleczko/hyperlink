@@ -15,7 +15,11 @@ export const Header = ({ page }) => {
 
   const logoutUser = async () => {
     try {
-      const res = await axios.get(`${baseDevelopmentURL}/logout`, { withCredentials: true });
+      const res = await axios.get(`${baseDevelopmentURL}/logout`, {
+        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      });
 
       if (res.data.message === 'Successfully logged out') {
         localStorage.clear();
