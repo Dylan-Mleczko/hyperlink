@@ -8,16 +8,23 @@ import { LinkPreview } from '@dhaiwat10/react-link-preview';
 import './styles.css';
 import axios from 'axios';
 import { NewLink } from '../../components/newLink/NewLink';
+import { ThreeDots } from 'react-loader-spinner';
 
 const Collections = () => {
-  const [items, setItems] = useState([]);
-  const [itemsLoaded, setItemsLoaded] = useState(false);
+  // const [items, setItems] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [isBusy, setBusy] = useState(true);
+  const [isNewLink, setIsNewLink] = useState(false);
+
+  // const
+  // const [itemsLoaded, setItemsLoaded] = useState(false);
   const location = useLocation();
   // console.log(collectionId);
   const collectionId = location?.state?.collectionId;
   console.log(collectionId);
 
-  const fetchItems = async () => {
+  const fetchLinks = async () => {
+    var links = null;
     try {
       await axios
         .get(`${baseDevelopmentURL}/link/all/:${collectionId}`, {
@@ -28,115 +35,91 @@ const Collections = () => {
           },
         })
         .then((response) => {
-          console.log(response.data);
+          // console.log();
+          // setLinks(response.data.data);
+          links = response.data.data.links;
+          console.log(links);
           console.log('it worked!!!');
         });
       // let json = await response.json();
-      // return { success: true, data: json };
+      // return { success: true, data: response.data.data };
     } catch (error) {
       console.log(error);
-      return { success: false };
+      // return { success: false };ß
     }
-  };
-
-  const createItem = async (item) => {
-    try {
-      let response = await axios.post(
-        `${baseDevelopmentURL}/link/new`,
-        {
-          name: 'a name',
-          description: 'description',
-          date: new Date().toDateString(),
-          link: 'https://axios-http.com/docs/post_example',
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      let json = await response.json();
-      return { success: true, data: json };
-    } catch (error) {
-      return { success: false };
-    }
-  };
-
-  const handleCreateLink = () => {
-    axios.post(
-      `${baseDevelopmentURL}/collection/new`,
-      {
-        formData: {
-          name: values.name,
-          description: values.description,
-          tags: values.tags,
-          image: values.image,
-        },
-        // formData,
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      }
-    ).then;
-  };
-
-  const handleClick = () => {
-    createItem();
+    return links;
   };
 
   useEffect(() => {
-    fetchItems();
-    // (async () => {
-    //   setItemsLoaded(false);
-    //   let res = await fetchItems();
-    //   if (res.success) {
-    //     setItems(res.data.results[0]);
-    //     setItemsLoaded(true);
-    //   }
-    // })();
+    const initLinks = async () => {
+      const links = await fetchLinks();
+      setLinks(links);
+      setBusy(false);
+    };
+    if (isBusy) {
+      initLinks();
+    }
   }, []);
+
+  const newLinkOnclick = () => {
+    setIsNewLink(true);
+  };
 
   return (
     <div className="body">
       <Header />
-      <NewLink collectionId={collectionId}></NewLink>
+
       <div className="fix-padding"></div>
-      <div className="d-flex justify-content-center">
-        <button onClick={handleClick}></button>
-        <div className="table-responsive">
-          <Title text="collection" />
-          <table className="table table-light table-hover table-lg align-middle collections-table rounded">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Preview</th>
-              </tr>
-            </thead>
-            <tbody className="table-group-divider">
-              {itemsLoaded &&
-                data.map((item) => (
-                  <tr>
-                    <td>{item.name}</td>
-                    <td>
-                      {item.description}
-                      <br />
-                      {item.date}
-                    </td>
-                    <td>
-                      <div class="w-25 h-25 bg-dark"></div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+      {/* <div className="d-flex justify-content-center"> */}
+      <div className="content">
+        <Title text="collection" />
+        <div className="collection-body">
+          <div className="new-link-button-container">
+            <button onClick={newLinkOnclick} className="new-link-button">
+              + NewLink
+            </button>
+            {isNewLink ? <NewLink collectionId={collectionId}></NewLink> : null}
+          </div>
+          <div className="table-responsive">
+            <table className="table table-light table-hover table-lg align-middle collections-table rounded">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Preview</th>
+                </tr>
+              </thead>
+              <tbody className="table-group-divider">
+                {isBusy ? (
+                  <ThreeDots
+                    height="100"
+                    width="100"
+                    radius="9"
+                    color="green"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle
+                    wrapperClass="loader"
+                  />
+                ) : (
+                  links?.map((item) => (
+                    <tr>
+                      <td>{item.name}</td>
+                      <td>
+                        {item.description}
+                        <br />
+                        {new Date(item.created_at).toDateString()}
+                      </td>
+                      <td>
+                        <div class="w-25 h-25 bg-dark"></div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
+        {/* </div> */}
       </div>
     </div>
   );

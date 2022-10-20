@@ -30,7 +30,12 @@ export const NewLink = ({ onCancel, collectionId }) => {
       axios
         .post(
           `${baseDevelopmentURL}/link/new`,
-          { uri: values.uri, name: values.name, collection_id: collectionId },
+          {
+            uri: values.uri,
+            name: values.name,
+            description: values.description,
+            collection_id: collectionId,
+          },
           {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('access_token'),

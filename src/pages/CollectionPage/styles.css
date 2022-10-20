@@ -21,3 +21,19 @@ th:last-child {
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
 }
+.new-link-button-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.new-link-button {
+  /* position: absolute; */
+  /* margin-bottom: 5rem; */
+  /* right: 10rem; */
+}
+
+.collection-body {
+  display: flex;
+}

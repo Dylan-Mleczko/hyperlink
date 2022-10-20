@@ -10,6 +10,7 @@ import { TagStore } from '../../store/TagStore';
 import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
+import { Title } from '../../components/Title/Title';
 
 const Gallery = () => {
   const location = useLocation();
@@ -151,51 +152,54 @@ const Gallery = () => {
         userName={location?.state?.user?.name?.first}
         token={location?.state?.user?.token}
       />
-      <div className="fix-padding"></div>
-      <button onClick={newCollectionOnclick} className="new-collection-button">
-        NewCollection
-      </button>
-      {isNewCollection ? (
-        <div className="new-collection-container">
-          <NewCollection onCancel={handleCancelCreate}></NewCollection>
+      <div className="content">
+        <div className="fix-padding"></div>
+        <Title text="Gallery" />
+        <button onClick={newCollectionOnclick} className="new-collection-button">
+          + NewCollection
+        </button>
+        {isNewCollection ? (
+          <div className="new-collection-container">
+            <NewCollection onCancel={handleCancelCreate}></NewCollection>
+          </div>
+        ) : null}
+        <div>
+          {isBusy ? (
+            <ThreeDots
+              height="100"
+              width="100"
+              radius="9"
+              color="green"
+              ariaLabel="three-dots-loading"
+              wrapperStyle
+              wrapperClass="loader"
+            />
+          ) : (
+            <TagFilterBox
+              tags={tags}
+              handleApplyClick={handleTagsApply}
+              handleCancelClick={removeTagsFilter}
+            ></TagFilterBox>
+          )}
         </div>
-      ) : null}
-      <div>
-        {isBusy ? (
-          <ThreeDots
-            height="100"
-            width="100"
-            radius="9"
-            color="green"
-            ariaLabel="three-dots-loading"
-            wrapperStyle
-            wrapperClass="loader"
-          />
-        ) : (
-          <TagFilterBox
-            tags={tags}
-            handleApplyClick={handleTagsApply}
-            handleCancelClick={removeTagsFilter}
-          ></TagFilterBox>
-        )}
-      </div>
-      <div>
-        {isBusy ? (
-          <ThreeDots
-            height="100"
-            width="100"
-            radius="9"
-            color="green"
-            ariaLabel="three-dots-loading"
-            wrapperStyle
-            wrapperClass="loader"
-          />
-        ) : (
-          <CollectionBox
-            collections={selectedCollections}
-            favouriteCollection={favouriteCollection}
-          ></CollectionBox>
-        )}
+        <div>
+          {isBusy ? (
+            <ThreeDots
+              height="100"
+              width="100"
+              radius="9"
+              color="green"
+              ariaLabel="three-dots-loading"
+              wrapperStyle
+              wrapperClass="loader"
+            />
+          ) : (
+            <CollectionBox
+              collections={selectedCollections}
+              favouriteCollection={favouriteCollection}
+            ></CollectionBox>
+          )}
+        </div>
       </div>
     </div>
   );

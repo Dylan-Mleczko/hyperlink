@@ -10,5 +10,7 @@
 }
 
 .new-collection-button {
-  margin-top: 10rem;
+  position: absolute;
+  margin-bottom: 5rem;
+  right: 13%;
 }
