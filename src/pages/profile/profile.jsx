@@ -22,9 +22,11 @@ const Profile = () => {
     const fetchData = async () => {
       axios
         .get(`${baseDevelopmentURL}/user`, {
-          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
         })
         .then((response) => {
           const user = response.data.user;

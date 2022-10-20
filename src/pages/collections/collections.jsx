@@ -14,7 +14,11 @@ const Collections = () => {
   const fetchItems = async () => {
     try {
       let response = await axios.get(`${baseDevelopmentURL}/item/all`, {
-        withCredentials: true,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
       });
       let json = await response.json();
       return { success: true, data: json };
@@ -34,7 +38,11 @@ const Collections = () => {
           link: 'https://axios-http.com/docs/post_example',
         },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
         }
       );
       let json = await response.json();
