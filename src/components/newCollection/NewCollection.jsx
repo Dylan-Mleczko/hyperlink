@@ -48,9 +48,9 @@ export const NewCollection = ({ onCancel }) => {
             // formData,
           },
           {
-            withCredentials: true,
-            // headers: { 'Content-type': 'multipart/form-date' },
-            // headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
           }
         )
         .then((response) => {

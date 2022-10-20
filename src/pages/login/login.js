@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import cookie from 'react-cookies';
 
 import './styles.css';
 import '../../index.css';
@@ -39,10 +40,12 @@ const Login = (props) => {
           },
         });
 
+        localStorage.setItem('access_token', res.data.user.token);
         localStorage.setItem('userName', res.data.user.name.first);
         localStorage.setItem('userNameLast', res.data.user.name.last);
         localStorage.setItem('userId', res.data.user.id);
         localStorage.setItem('userEmail', res.data.user.email);
+        // cookie.save('access_token', res.data.user.token);
 
         navigate('/gallery');
       } catch (err) {

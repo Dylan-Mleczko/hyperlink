@@ -60,7 +60,6 @@ const SignUp = (props) => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       try {
-        axios.defaults.withCredentials = true;
         const res = await axios.post(`${baseDevelopmentURL}/register`, {
           data: {
             userDetails: { firstName: values.firstName, lastName: values.lastName },
@@ -76,6 +75,7 @@ const SignUp = (props) => {
           },
         });
 
+        localStorage.setItem('access_token', res.data.user.token);
         localStorage.setItem('userName', res.data.data.user.name.first);
         localStorage.setItem('userNameLast', res.data.data.user.name.last);
         localStorage.setItem('userId', res.data.data.user.id);
