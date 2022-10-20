@@ -24,7 +24,7 @@ export const NewCollection = ({ onCancel }) => {
       name: Yup.string().required('You must enter a name'),
       description: Yup.string().required('You must enter a description'),
       tags: Yup.string(),
-      image: Yup.mixed(),
+      // image: Yup.mixed(),
     }),
     onSubmit: async (values) => {
       console.log(values);
