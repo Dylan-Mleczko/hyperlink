@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-export const NewCollection = ({ onCancel }) => {
+export const NewCollection = ({ onCancel, onSuccess }) => {
   let user;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -59,6 +59,7 @@ export const NewCollection = ({ onCancel }) => {
           setError('');
           const collection = response.data.data.collection;
           console.log(collection);
+          onSuccess().then();
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
           // setFirstName(user.name.first);

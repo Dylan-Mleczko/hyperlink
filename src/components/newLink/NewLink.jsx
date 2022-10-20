@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-export const NewLink = ({ onCancel, collectionId }) => {
+export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
   let user;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -49,6 +49,7 @@ export const NewLink = ({ onCancel, collectionId }) => {
           const data = response.data.data;
           console.log(data);
           console.log('successfully created link!!!');
+          onSuccess().then();
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
           // setFirstName(user.name.first);
@@ -100,7 +101,7 @@ export const NewLink = ({ onCancel, collectionId }) => {
           )}
         </div>
         <div className="mt3">
-          <label className="black">uri</label>
+          <label className="black">URI</label>
           <input
             type="text"
             name="uri"

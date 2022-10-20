@@ -11,23 +11,28 @@ export const Collection = ({ collection, favouriteCollection }) => {
     // console.log(collection._id);
     navigate('/collections', {
       state: {
-        collectionId: collection._id,
+        collection,
       },
     });
   };
   const [isError, setIsError] = useState(false);
   return (
-    <div onClick={redirectToCollectionPage}>
+    <div>
       <div className="collection-box">
         <div
           className="collection-image"
+          onClick={redirectToCollectionPage}
           style={{
-            backgroundColor: isError ? '' : '#198754',
+            backgroundColor: '#198754',
           }}
         >
           <img
             loading="lazy"
-            src={`${baseDevelopmentURL}/collection/image/${collection._id}`}
+            src={
+              collection.image
+                ? `${baseDevelopmentURL}/collection/image/${collection._id}`
+                : 'no-image.jpg'
+            }
             alt="image broken, please upload new image"
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
@@ -37,7 +42,9 @@ export const Collection = ({ collection, favouriteCollection }) => {
           />
         </div>
         <div className="collection-bottom">
-          <p>{collection.name}</p>
+          <div className="collection-title" title={collection.name}>
+            {collection.name}
+          </div>
           <button
             className="favourite-button"
             onClick={() => favouriteCollection(collection)}

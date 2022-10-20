@@ -75,18 +75,20 @@ const SignUp = (props) => {
           },
         });
 
-        localStorage.setItem('access_token', res.data.user.token);
-        localStorage.setItem('userName', res.data.data.user.name.first);
-        localStorage.setItem('userNameLast', res.data.data.user.name.last);
-        localStorage.setItem('userId', res.data.data.user.id);
-        localStorage.setItem('userEmail', res.data.data.user.email);
+        const user = login.data.user;
 
-        res.data.data.user['id'] = login.data.user.id;
-        res.data.data.user['token'] = login.data.user.token;
+        localStorage.setItem('access_token', user.token);
+        localStorage.setItem('userName', user.name.first);
+        localStorage.setItem('userNameLast', user.name.last);
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userEmail', user.email);
+
+        // res.data.data.user['id'] = login.data.user.id;
+        // res.data.data.user['token'] = login.data.user.token;
 
         setLoggedIn(true);
-        setUser(res.data.data.user);
-        navigate('/gallery', { state: { user: res.data.data.user } });
+        setUser(user);
+        navigate('/gallery', { state: { user } });
       } catch (err) {
         setErrorMessage(err.message);
         setError(true);

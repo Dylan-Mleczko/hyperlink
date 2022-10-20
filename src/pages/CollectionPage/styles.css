@@ -29,11 +29,24 @@ th:last-child {
 }
 
 .new-link-button {
-  /* position: absolute; */
-  /* margin-bottom: 5rem; */
-  /* right: 10rem; */
+  margin-right: 1.5rem;
+}
+
+.table-responsive {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .collection-body {
   display: flex;
+}
+
+.description-block {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20rem;
+  /* border:solid 1px green ; */
 }

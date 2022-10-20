@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 import Welcome from '../pages/welcome/welcome';
 import Gallery from '../pages/gallery/gallery';
-import Collections from '../pages/CollectionPage/collectionPage';
+import Collections from '../pages/collectionPage/collectionPage';
 import Login from '../pages/login/login';
 import Signup from '../pages/signup/signup';
 import Profile from '../pages/profile/profile';

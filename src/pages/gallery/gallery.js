@@ -22,6 +22,7 @@ const Gallery = () => {
   const clearTags = TagStore((state) => state.clearTags);
   const [tags, setTags] = useState([]);
   const [isNewCollection, setIsNewCollection] = useState(false);
+  const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
 
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
@@ -122,16 +123,16 @@ const Gallery = () => {
   };
 
   // retrieve collections
+  const fetchCollections = async () => {
+    const curCollections = await updateCollections();
+    console.log(curCollections);
+    setCollections(curCollections);
+    setSelectedCollections(curCollections);
+    setBusy(false);
+  };
   useEffect(() => {
-    const initiateCollections = async () => {
-      const curCollections = await updateCollections();
-      setCollections(curCollections);
-      setSelectedCollections(curCollections);
-      setBusy(false);
-    };
-
     if (isBusy) {
-      initiateCollections();
+      fetchCollections();
     }
   }, [selectedCollections]);
 
@@ -144,6 +145,14 @@ const Gallery = () => {
   // useEffect(() => {
   //   handleTagsApply().then();
   // }, [selectedTags]);
+  const handleAfterCreate = async () => {
+    await fetchCollections();
+    setIsNewCollection(false);
+  };
+
+  const filterBoxOnclick = () => {
+    setIsFilterBoxDisplay(!isFilterBoxDisplay);
+  };
 
   return (
     <div className="body">
@@ -155,16 +164,22 @@ const Gallery = () => {
       <div className="content">
         <div className="fix-padding"></div>
         <Title text="Gallery" />
-        <button onClick={newCollectionOnclick} className="new-collection-button">
-          + NewCollection
-        </button>
+        <div className="action-container">
+          <button onClick={filterBoxOnclick}>FilterBy</button>
+          <button onClick={newCollectionOnclick} className="new-collection-button">
+            + New Collection
+          </button>
+        </div>
         {isNewCollection ? (
           <div className="new-collection-container">
-            <NewCollection onCancel={handleCancelCreate}></NewCollection>
+            <NewCollection
+              onCancel={handleCancelCreate}
+              onSuccess={handleAfterCreate}
+            ></NewCollection>
           </div>
         ) : null}
         <div>
-          {isBusy ? (
+          {isBusy && !isFilterBoxDisplay ? (
             <ThreeDots
               height="100"
               width="100"
@@ -175,11 +190,13 @@ const Gallery = () => {
               wrapperClass="loader"
             />
           ) : (
-            <TagFilterBox
-              tags={tags}
-              handleApplyClick={handleTagsApply}
-              handleCancelClick={removeTagsFilter}
-            ></TagFilterBox>
+            isFilterBoxDisplay && (
+              <TagFilterBox
+                tags={tags}
+                handleApplyClick={handleTagsApply}
+                handleCancelClick={removeTagsFilter}
+              ></TagFilterBox>
+            )
           )}
         </div>
         <div>
