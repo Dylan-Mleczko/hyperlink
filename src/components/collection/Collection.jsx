@@ -2,12 +2,22 @@ import './styles.css';
 import { Tag } from '../../components/tag/Tag';
 import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 export const Collection = ({ collection, favouriteCollection }) => {
+  const navigate = useNavigate();
+  const redirectToCollectionPage = () => {
+    // console.log(collection._id);
+    navigate('/collections', {
+      state: {
+        collectionId: collection._id,
+      },
+    });
+  };
   const [isError, setIsError] = useState(false);
   return (
-    <div>
+    <div onClick={redirectToCollectionPage}>
       <div className="collection-box">
         <div
           className="collection-image"
