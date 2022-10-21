@@ -30,7 +30,7 @@ const EndResestPassword = (props) => {
         .required('You must enter a password'),
     }),
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       try {
         await axios.post(`${baseDevelopmentURL}/end/reset`, {
           data: {

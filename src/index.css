@@ -21,7 +21,7 @@ body {
 }
 
 .fix-padding {
-  padding-top: 5rem;
+  padding-top: 2rem;
 }
 
 .body {
@@ -35,7 +35,7 @@ body {
   height: 100%;
 }
 .content {
-  width: 100%;
+  width: 80%;
   display: block;
   margin-left: auto;
   margin-right: auto;

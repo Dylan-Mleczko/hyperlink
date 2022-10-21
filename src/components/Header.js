@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -12,6 +12,31 @@ export const Header = ({ page }) => {
   const navigate = useNavigate();
   const userName = localStorage.getItem('userName');
   const id = 'logout';
+
+  useEffect(() => {
+    if (!(page === SIGNUP || page === LOGIN)) {
+      fetchUser().then();
+      console.log('Nooooooo');
+    }
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      await axios.get(`${baseDevelopmentURL}/user`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      const errCode = error.response.status;
+      if (errCode === 401) {
+        localStorage.clear();
+        navigate('/');
+      }
+    }
+  };
 
   const logoutUser = async () => {
     try {
@@ -42,7 +67,7 @@ export const Header = ({ page }) => {
   };
 
   return (
-    <nav className="navbar fixed-top navbar-expand-lg nav-bar p-0">
+    <nav className="navbar navbar-expand-md nav-bar p-0">
       <div className="container-fluid">
         {userName ? (
           <Link to={'/gallery'} className="pointer font-semi-bold navbar-brand fs-2">

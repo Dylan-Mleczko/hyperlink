@@ -10,5 +10,13 @@
 }
 
 .new-collection-button {
-  margin-top: 10rem;
+  position: absolute;
+  margin-bottom: 5rem;
+  right: 13%;
+}
+
+.action-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 2rem;
 }

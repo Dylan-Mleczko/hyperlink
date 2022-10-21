@@ -75,11 +75,11 @@ const Welcome = () => {
           <div className="footer-box">
             <p className="footer-text">© **IT Happens Pty Ltd 2022, all rights reserved.</p>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <p className="footer-text">Dylan |</p>
-              <p className="footer-text">Kushal |</p>
-              <p className="footer-text">Lexi |</p>
+              <p className="footer-text">Kelsey |</p>
               <p className="footer-text">Thomas |</p>
-              <p className="footer-text">Kelsey </p>
+              <p className="footer-text">Dylan |</p>
+              <p className="footer-text">Lexi |</p>
+              <p className="footer-text">Kushal </p>
             </div>
           </div>
         </div>
