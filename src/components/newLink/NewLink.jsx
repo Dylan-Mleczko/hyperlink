@@ -117,7 +117,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
         {error && <p className="submit-error">{error}</p>}
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
-            Create Collection
+            Create Link
           </button>
           <button id="login" className="solid-buttton" onClick={onCancel}>
             Cancel
