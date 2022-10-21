@@ -19,7 +19,7 @@ const Welcome = () => {
 
   return (
     <div className="body">
-      <div className="content">
+      <div className="content" style={{ width: '100%' }}>
         <Header />
         <div>
           <div className="titleContainer">
