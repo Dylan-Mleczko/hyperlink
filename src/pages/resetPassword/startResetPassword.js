@@ -25,7 +25,7 @@ const StartResestPassword = (props) => {
       email: Yup.string().email('Invalid email format').required('Your email is required'),
     }),
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       try {
         const res = await axios.post(`${baseDevelopmentURL}/start/reset`, {
           data: {

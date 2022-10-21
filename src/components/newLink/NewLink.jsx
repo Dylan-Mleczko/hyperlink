@@ -26,7 +26,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
     }),
     onSubmit: async (values) => {
       console.log(values);
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       axios
         .post(
           `${baseDevelopmentURL}/link/new`,

@@ -28,7 +28,7 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
     }),
     onSubmit: async (values) => {
       console.log(values);
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       let formData = new FormData();
       formData.append('name', values.name);
       formData.append('description', values.description);
