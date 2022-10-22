@@ -14,9 +14,18 @@ export const Header = ({ page }) => {
   const id = 'logout';
 
   useEffect(() => {
-    if (!(page === SIGNUP || page === LOGIN)) {
+    var currentPath = window.location.pathname;
+    // console.log(currentLocation.pathname);
+    if (
+      !(
+        currentPath === '/login' ||
+        currentPath === '/signup' ||
+        currentPath === '/password/start/reset' ||
+        currentPath === '/password/end/reset'
+      )
+    ) {
       fetchUser().then();
-      console.log('Nooooooo');
+      // console.log('Nooooooo');
     }
   }, []);
 
