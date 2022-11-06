@@ -4,6 +4,8 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 export const Collection = ({ collection, favouriteCollection }) => {
   const navigate = useNavigate();
@@ -19,6 +21,11 @@ export const Collection = ({ collection, favouriteCollection }) => {
   return (
     <div>
       <div className="collection-box">
+        <div className="d-flex flex-row justify-content-end">
+          <button className="w-20 edit-icon boder-rounded">
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+        </div>
         <div
           className="collection-image"
           onClick={redirectToCollectionPage}
