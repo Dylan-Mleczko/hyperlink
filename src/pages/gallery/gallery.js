@@ -11,6 +11,7 @@ import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 import { Title } from '../../components/Title/Title';
+import { EditBox } from '../../components/editBox/EditBox';
 
 const Gallery = () => {
   const location = useLocation();
@@ -23,10 +24,22 @@ const Gallery = () => {
   const [tags, setTags] = useState([]);
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
+  const [displayCollection, setDisplayCollection] = useState({});
 
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
   }, []);
+
+  const handleEdit = (collectionItem) => {
+    // alert(JSON.stringify(linkItem));
+    setDisplayCollection(collectionItem);
+    document.getElementById('displayButton').click();
+    // displayButton
+  };
+
+  const handleAfterUpdate = async () => {
+    await fetchCollections();
+  };
 
   const updateCollections = async () => {
     var curCollections = null;
@@ -214,10 +227,17 @@ const Gallery = () => {
             <CollectionBox
               collections={selectedCollections}
               favouriteCollection={favouriteCollection}
+              handleEdit={handleEdit}
             ></CollectionBox>
           )}
         </div>
       </div>
+      <EditBox
+        isLink={false}
+        title={displayCollection.name}
+        data={displayCollection}
+        onUpdate={handleAfterUpdate}
+      ></EditBox>
     </div>
   );
 };

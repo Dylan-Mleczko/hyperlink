@@ -2,7 +2,8 @@ import './styles.css';
 
 import React, { useState } from 'react';
 import { EditLinkForm } from '../editLinkForm/EditLinkForm';
-export const EditBox = ({ title, data, onUpdate, onDelete }) => {
+import { EditCollectionForm } from '../editCollectionForm/EditCollectionForm';
+export const EditBox = ({ title, data, onUpdate, onDelete, isLink }) => {
   const [isEdit, setIsEdit] = useState(false);
 
   const EditOnclick = () => {
@@ -59,11 +60,19 @@ export const EditBox = ({ title, data, onUpdate, onDelete }) => {
 
             {isEdit ? (
               <div className="modal-body">
-                <EditLinkForm
-                  data={data}
-                  onCancel={handleCancelUpdate}
-                  onSuccess={handleUpdate}
-                ></EditLinkForm>
+                {isLink ? (
+                  <EditLinkForm
+                    data={data}
+                    onCancel={handleCancelUpdate}
+                    onSuccess={handleUpdate}
+                  ></EditLinkForm>
+                ) : (
+                  <EditCollectionForm
+                    data={data}
+                    onSuccess={handleUpdate}
+                    onCancel={handleCancelUpdate}
+                  ></EditCollectionForm>
+                )}
               </div>
             ) : (
               <div className="modal-body">{data.description}</div>
