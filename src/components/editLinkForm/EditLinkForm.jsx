@@ -8,32 +8,36 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
+export const EditLinkForm = ({ onCancel, onSuccess, data }) => {
   let user;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  console.log(data);
+
   const formik = useFormik({
     initialValues: {
-      uri: '',
-      name: 'new Link',
-      description: '',
+      uri: data.uri,
+      name: data.name,
+      description: data.description,
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       uri: Yup.string().required('You must enter a link'),
       name: Yup.string().required('You must enter a name'),
       description: Yup.string().required('You must enter a description'),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
       // alert(JSON.stringify(values, null, 2));
       axios
-        .post(
-          `${baseDevelopmentURL}/link/new`,
+        .put(
+          `${baseDevelopmentURL}/link/${data._id}`,
           {
-            uri: values.uri,
-            name: values.name,
-            description: values.description,
-            collection_id: collectionId,
+            linkDetails: {
+              uri: values.uri,
+              name: values.name,
+              description: values.description,
+            },
           },
           {
             headers: {
@@ -46,8 +50,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
         .then((response) => {
           setError('');
           const data = response.data.data;
-          console.log(data);
-          console.log('successfully created link!!!');
+          console.log('successfully updated link!!!');
           onSuccess().then();
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
@@ -68,8 +71,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
   });
 
   return (
-    <div className="new-box">
-      <h1 className="details-title ">Create a new link</h1>
+    <div>
       <form onSubmit={formik.handleSubmit}>
         <div className="mt3">
           <label className="black">Name</label>
@@ -116,7 +118,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
         {error && <p className="submit-error">{error}</p>}
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
-            Create Link
+            Update
           </button>
           <button id="login" className="solid-buttton" onClick={onCancel}>
             Cancel
