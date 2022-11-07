@@ -9,6 +9,7 @@ import Signup from '../pages/signup/signup';
 import Profile from '../pages/profile/profile';
 import StartResestPassword from '../pages/resetPassword/startResetPassword';
 import EndResestPassword from '../pages/resetPassword/endResetPassword';
+import TwoFactor from '../pages/twoFactor/TwoFactor';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -22,6 +23,7 @@ const AppRoutes = () => (
       <Route path="/collections" element={<Collections />} />
       <Route path="/password/start/reset" element={<StartResestPassword />} />
       <Route path="/password/end/reset" element={<EndResestPassword />} />
+      <Route path="/verify/email" element={<TwoFactor />} />
     </Routes>
   </BrowserRouter>
 );

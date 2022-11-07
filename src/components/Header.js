@@ -21,7 +21,8 @@ export const Header = ({ page }) => {
         currentPath === '/login' ||
         currentPath === '/signup' ||
         currentPath === '/password/start/reset' ||
-        currentPath === '/password/end/reset'
+        currentPath === '/password/end/reset' ||
+        currentPath === '/verify/email'
       )
     ) {
       fetchUser().then();
