@@ -7,15 +7,42 @@ import React, { useState } from 'react';
 
 export const Collection = ({ collection, favouriteCollection }) => {
   const navigate = useNavigate();
-  const redirectToCollectionPage = () => {
-    // console.log(collection._id);
-    navigate('/collections', {
-      state: {
-        collection,
-      },
-    });
+
+  const redirectToCollectionPage = async () => {
+    if (await updateClickCountCollection()) {
+      navigate('/collections', {
+        state: {
+          collection,
+        },
+      });
+    }
   };
+
+  const updateClickCountCollection = async () => {
+    axios
+      .put(
+        `${baseDevelopmentURL}/collection/${collection._id}`,
+        { collectionDetails: { click_count: parseInt(collection.click_count) + 1 } },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((response) => {
+        console.log('updating click_count to:', response.data.data.collection.click_count);
+      })
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
+    return true;
+  };
+
   const [isError, setIsError] = useState(false);
+
   return (
     <div>
       <div className="collection-box">

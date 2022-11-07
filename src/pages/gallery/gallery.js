@@ -66,7 +66,7 @@ const Gallery = () => {
   };
 
   const handleTagsApply = async () => {
-    console.log('filtering by tags');
+    // console.log('filtering by tags');
     if (selectedTags.length === 0) {
       setSelectedCollections(collections);
       return;
@@ -122,29 +122,49 @@ const Gallery = () => {
     setIsNewCollection(false);
   };
 
-  // retrieve collections
   const fetchCollections = async () => {
     const curCollections = await updateCollections();
-    console.log(curCollections);
     setCollections(curCollections);
     setSelectedCollections(curCollections);
     setBusy(false);
   };
+
+  function handleSortOnRecent() {
+    const newSelectedCollections = [...selectedCollections].sort(
+      (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+    );
+    setSelectedCollections(newSelectedCollections);
+  }
+
+  function handleSortOnFrequency() {
+    const newSelectedCollection = [...selectedCollections].sort(
+      (a, b) => b.click_count - a.click_count
+    );
+    setSelectedCollections(newSelectedCollection);
+  }
+
+  function handleSortOnCreation() {
+    console.log('sorting collections on creation');
+    console.log(
+      'sorted collections = ',
+      selectedCollections.sort((a, b) => new Date(b.create_at) - new Date(a.create_at))
+    );
+    setSelectedCollections(
+      selectedCollections.sort((a, b) => new Date(b.create_at) - new Date(a.create_at))
+    );
+  }
+
   useEffect(() => {
     if (isBusy) {
       fetchCollections();
     }
   }, [selectedCollections]);
 
-  // refresh favourite icon
+  //after selectedTags changed, to apply tags filter
   useEffect(() => {
     handleTagsApply().then();
   }, [collections]);
 
-  //after selectedTags changed, to apply tags filter
-  // useEffect(() => {
-  //   handleTagsApply().then();
-  // }, [selectedTags]);
   const handleAfterCreate = async () => {
     await fetchCollections();
     setIsNewCollection(false);
@@ -166,6 +186,30 @@ const Gallery = () => {
         <Title text="Gallery" />
         <div className="action-container">
           <button onClick={filterBoxOnclick}>FilterBy</button>
+          <div className="dropdown">
+            <button
+              className="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Sort By
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button className="dropdown-item" onClick={() => handleSortOnFrequency()}>
+                Most Frequent
+              </button>
+              <button className="dropdown-item" onClick={() => handleSortOnRecent()}>
+                Last Used
+              </button>
+              <button className="dropdown-item" onClick={() => handleSortOnCreation()}>
+                Date Created
+              </button>
+            </div>
+          </div>
           <button onClick={newCollectionOnclick} className="new-collection-button">
             + New Collection
           </button>
@@ -187,7 +231,7 @@ const Gallery = () => {
               color="green"
               ariaLabel="three-dots-loading"
               wrapperStyle
-              wrapperClass="loader"
+              wrapperclassName="loader"
             />
           ) : (
             isFilterBoxDisplay && (
@@ -208,7 +252,7 @@ const Gallery = () => {
               color="green"
               ariaLabel="three-dots-loading"
               wrapperStyle
-              wrapperClass="loader"
+              wrapperclassName="loader"
             />
           ) : (
             <CollectionBox
