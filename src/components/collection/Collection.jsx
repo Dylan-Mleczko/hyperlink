@@ -4,6 +4,8 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 export const Collection = ({ collection, favouriteCollection }) => {
   const navigate = useNavigate();
@@ -40,6 +42,9 @@ export const Collection = ({ collection, favouriteCollection }) => {
             }}
             placeholder="collection-background.jpg"
           />
+          <button className="edit-icon">
+            <FontAwesomeIcon icon={faPen} />
+          </button>
         </div>
         <div className="collection-bottom">
           <div className="collection-title" title={collection.name}>
