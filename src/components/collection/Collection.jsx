@@ -42,11 +42,9 @@ export const Collection = ({ collection, favouriteCollection }) => {
             }}
             placeholder="collection-background.jpg"
           />
-          <div className="d-flex flex-row flex-column align-items-start">
-            <button className="edit-icon">
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-          </div>
+          <button className="edit-icon">
+            <FontAwesomeIcon icon={faPen} />
+          </button>
         </div>
         <div className="collection-bottom">
           <div className="collection-title" title={collection.name}>

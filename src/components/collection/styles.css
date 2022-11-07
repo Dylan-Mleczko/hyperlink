@@ -70,4 +70,6 @@
   background-color: transparent !important;
   border: transparent !important;
   border-radius: 30px;
+  position: absolute;
+  right: 2px;
 }
