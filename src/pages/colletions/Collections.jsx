@@ -85,7 +85,7 @@ const Collections = () => {
         setDisplayLink({});
         toast.success('Link Deleted!', {
           position: 'top-center',
-          autoClose: false,
+          autoClose: true,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -176,40 +176,42 @@ const Collections = () => {
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              {isBusy ? (
-                <ThreeDots
-                  height="100"
-                  width="100"
-                  radius="9"
-                  color="green"
-                  ariaLabel="three-dots-loading"
-                  wrapperStyle
-                  wrapperclassName="loader"
-                />
-              ) : (
-                links?.map((item) => (
-                  <tr
-                    key={item._id}
-                    onClick={() => {
-                      showDetail(item);
-                    }}
-                  >
-                    <td>
-                      <a href={item.uri} target="_blank" title={item.uri}>
-                        {item.name}
-                      </a>
-                    </td>
-                    <td>
-                      <div className="description-block">{item.description}</div>
-                    </td>
-                    <td>
-                      <div class="w-125 h-25">{new Date(item.created_at).toDateString()}</div>
-                    </td>
-                  </tr>
-                ))
-              )}
+              {isBusy
+                ? null
+                : links?.map((item) => (
+                    <tr
+                      key={item._id}
+                      onClick={() => {
+                        showDetail(item);
+                      }}
+                    >
+                      <td>
+                        <a href={item.uri} target="_blank" title={item.uri}>
+                          {item.name}
+                        </a>
+                      </td>
+                      <td>
+                        <div className="description-block">{item.description}</div>
+                      </td>
+                      <td>
+                        <div class="w-125 h-25">{new Date(item.created_at).toDateString()}</div>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
+        </div>
+        <div className="loadingDotsIcon">
+          <ThreeDots
+            height="100"
+            width="100"
+            radius="9"
+            color="green"
+            ariaLabel="three-dots-loading"
+            wrapperStyle
+            visible={isBusy}
+            wrapperclassName="loader"
+          />
         </div>
         <EditBox
           title={displayLink.name}

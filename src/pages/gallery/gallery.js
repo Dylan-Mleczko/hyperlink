@@ -71,7 +71,7 @@ const Gallery = () => {
         setDisplayCollection({});
         toast.success('Collection Deleted!', {
           position: 'top-center',
-          autoClose: false,
+          autoClose: true,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
