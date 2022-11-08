@@ -4,6 +4,7 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 // import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import React, { useState } from 'react';
+import { MagnifyingGlass } from 'react-loader-spinner';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
@@ -12,6 +13,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
   let user;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [isScraping, setIsScraping] = useState(false);
   const formik = useFormik({
     initialValues: {
       uri: '',
@@ -67,6 +69,57 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
     },
   });
 
+  const handleScrape = () => {
+    console.log('scraping!!!!');
+    setIsScraping(true);
+
+    axios
+      .post(
+        `${baseDevelopmentURL}/link/scrape`,
+        {
+          domain: document.getElementById('domain').value,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((response) => {
+        setError('');
+        const data = response.data.data;
+        console.log(data);
+        console.log('successfully scrape the website!!!');
+
+        // document.getElementById('name').setAttribute('value', data.title);
+        // document.getElementById('description').setAttribute('value', data.description);
+        // context.setFieldValue()
+        if (data.title) {
+          formik.setFieldValue('name', data.title);
+        }
+        if (data.description) {
+          formik.setFieldValue('description', data.description);
+        }
+        setIsScraping(false);
+        // document.getElementById('name').value = data.title;
+        // document.getElementById('description').value = data.description;
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsScraping(false);
+        if (err.response.data) setError(err.response.data.message);
+        else setError(err.message);
+        // console.log(error);
+        const errCode = err.response.status;
+        if (errCode === 401) {
+          localStorage.clear();
+          navigate('/');
+        }
+      });
+  };
+
   return (
     <div className="new-box">
       <h1 className="details-title ">Create a new link</h1>
@@ -76,6 +129,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           <input
             type="text"
             name="name"
+            id="name"
             value={formik.values.name}
             onChange={formik.handleChange}
             placeholder="Enter a name"
@@ -90,6 +144,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           <input
             type="text"
             name="description"
+            id="description"
             value={formik.values.description}
             onChange={formik.handleChange}
             placeholder="Enter a description"
@@ -104,11 +159,32 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           <input
             type="text"
             name="uri"
+            id="domain"
             value={formik.values.uri}
             onChange={formik.handleChange}
             placeholder="Enter uri"
             className="input-box-container input-reset"
           />
+          <span
+            className="btn btn-secondary"
+            id="autoFill"
+            onClick={handleScrape}
+            type="scrape"
+            value="scrape"
+          >
+            Auto Fill
+          </span>
+          <MagnifyingGlass
+            visible={isScraping}
+            height="80"
+            width="80"
+            ariaLabel="MagnifyingGlass-loading"
+            wrapperStyle={{}}
+            wrapperClass="MagnifyingGlass-wrapper"
+            glassColor="#c0efff"
+            color="#4fa94d"
+          />
+          {/* <input class="btn btn-secondary" type="submit" value="Submit"></input> */}
           {formik.errors.uri && formik.touched.uri && (
             <p className="input-error">{formik.errors.uri}</p>
           )}
