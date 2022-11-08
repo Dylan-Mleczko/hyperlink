@@ -2,6 +2,7 @@ import { React, useState, useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
 
 import { Header } from '../../components/Header';
 import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
@@ -11,6 +12,7 @@ import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 import { Title } from '../../components/Title/Title';
+import { EditBox } from '../../components/editBox/EditBox';
 
 const Gallery = () => {
   const location = useLocation();
@@ -23,10 +25,79 @@ const Gallery = () => {
   const [tags, setTags] = useState([]);
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
+  const [displayCollection, setDisplayCollection] = useState({});
 
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
   }, []);
+
+  const handleEdit = (collectionItem) => {
+    // alert(JSON.stringify(linkItem));
+    setDisplayCollection(collectionItem);
+    document.getElementById('displayButton').click();
+    // displayButton
+  };
+
+  const handleDeleteCollection = () => {
+    axios
+      .delete(`${baseDevelopmentURL}/collection/${displayCollection._id}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log('successfully deleted collection!!!');
+        setDisplayCollection({});
+        toast.success('Collection Deleted!', {
+          position: 'top-center',
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: 'delete',
+        });
+        handleAfterUpdate();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.data) {
+          toast.error(err.response.data.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        } else {
+          toast.error(err.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        }
+        const errCode = err.response.status;
+        if (errCode === 401) {
+          localStorage.clear();
+          navigate('/');
+        }
+      });
+  };
+
+  const handleAfterUpdate = async () => {
+    await fetchCollections();
+  };
 
   const updateCollections = async () => {
     var curCollections = null;
@@ -214,10 +285,18 @@ const Gallery = () => {
             <CollectionBox
               collections={selectedCollections}
               favouriteCollection={favouriteCollection}
+              handleEdit={handleEdit}
             ></CollectionBox>
           )}
         </div>
       </div>
+      <EditBox
+        isLink={false}
+        title={displayCollection.name}
+        data={displayCollection}
+        onUpdate={handleAfterUpdate}
+        onDelete={handleDeleteCollection}
+      ></EditBox>
     </div>
   );
 };

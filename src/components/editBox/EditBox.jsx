@@ -2,7 +2,8 @@ import './styles.css';
 
 import React, { useState } from 'react';
 import { EditLinkForm } from '../editLinkForm/EditLinkForm';
-export const EditBox = ({ title, data, onUpdate, onDelete }) => {
+import { EditCollectionForm } from '../editCollectionForm/EditCollectionForm';
+export const EditBox = ({ title, data, onUpdate, onDelete, isLink }) => {
   const [isEdit, setIsEdit] = useState(false);
 
   const EditOnclick = () => {
@@ -59,32 +60,42 @@ export const EditBox = ({ title, data, onUpdate, onDelete }) => {
 
             {isEdit ? (
               <div className="modal-body">
-                <EditLinkForm
-                  data={data}
-                  onCancel={handleCancelUpdate}
-                  onSuccess={handleUpdate}
-                ></EditLinkForm>
+                {isLink ? (
+                  <EditLinkForm
+                    data={data}
+                    onCancel={handleCancelUpdate}
+                    onSuccess={handleUpdate}
+                  ></EditLinkForm>
+                ) : (
+                  <EditCollectionForm
+                    data={data}
+                    onSuccess={handleUpdate}
+                    onCancel={handleCancelUpdate}
+                  ></EditCollectionForm>
+                )}
               </div>
             ) : (
               <div className="modal-body">{data.description}</div>
             )}
-            <div className="modal-footer">
-              <button type="button" class="btn btn-danger" onClick={handleDelete}>
-                Delete
-              </button>
-              <button type="button" class="btn btn-primary" onClick={EditOnclick}>
-                Edit
-              </button>
-              <button
-                id="closeButton"
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={handleCloseBox}
-              >
-                Close
-              </button>
-            </div>
+            {isEdit ? null : (
+              <div className="modal-footer">
+                <button type="button" class="btn btn-danger" onClick={handleDelete}>
+                  Delete
+                </button>
+                <button type="button" class="btn btn-primary" onClick={EditOnclick}>
+                  Edit
+                </button>
+                <button
+                  id="closeButton"
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                  onClick={handleCloseBox}
+                >
+                  Close
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

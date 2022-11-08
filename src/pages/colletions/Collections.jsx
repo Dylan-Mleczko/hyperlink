@@ -219,6 +219,7 @@ const Collections = () => {
           data={displayLink}
           onUpdate={handleAfterUpdate}
           onDelete={handleDeleteLink}
+          isLink={true}
         ></EditBox>
       </div>
     </div>

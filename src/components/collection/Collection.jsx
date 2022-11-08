@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-export const Collection = ({ collection, favouriteCollection }) => {
+export const Collection = ({ collection, handleEdit, favouriteCollection }) => {
   const navigate = useNavigate();
   const redirectToCollectionPage = () => {
     // console.log(collection._id);
@@ -23,13 +23,13 @@ export const Collection = ({ collection, favouriteCollection }) => {
       <div className="collection-box">
         <div
           className="collection-image"
-          onClick={redirectToCollectionPage}
           style={{
             backgroundColor: '#198754',
           }}
         >
           <img
             loading="lazy"
+            onClick={redirectToCollectionPage}
             src={
               collection.image
                 ? `${baseDevelopmentURL}/collection/image/${collection._id}`
@@ -42,7 +42,13 @@ export const Collection = ({ collection, favouriteCollection }) => {
             }}
             placeholder="collection-background.jpg"
           />
-          <button className="edit-icon">
+          <button
+            className="edit-icon"
+            onClick={() => {
+              console.log('edit clicked');
+              handleEdit(collection);
+            }}
+          >
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
