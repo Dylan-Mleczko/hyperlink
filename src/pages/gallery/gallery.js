@@ -221,7 +221,9 @@ const Gallery = () => {
         <div className="fix-padding"></div>
         <Title text="Gallery" />
         <div className="action-container">
-          <button onClick={filterBoxOnclick}>FilterBy</button>
+          <button className="btn btn-secondary" onClick={filterBoxOnclick} width="fit-content">
+            Filter By Tags
+          </button>
           <div className="dropdown">
             <button
               className="btn btn-secondary dropdown-toggle"
@@ -246,7 +248,14 @@ const Gallery = () => {
               </button>
             </div>
           </div>
-          <button onClick={newCollectionOnclick} className="new-collection-button">
+          <button
+            className="btn btn-secondary"
+            onClick={newCollectionOnclick}
+            // position="absolute"
+            // margin-bottom="5rem"
+            // right="19%"
+            // className="new-collection-button"
+          >
             + New Collection
           </button>
         </div>
