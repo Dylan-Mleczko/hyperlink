@@ -27,15 +27,17 @@ const TwoFactor = (props) => {
     }),
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(`${baseDevelopmentURL}/verify/email`, {
+        const valData = location.state.values;
+
+        const res = await axios.post(`${baseDevelopmentURL}/register/verify`, {
           data: {
+            userDetails: { firstName: valData.firstName, lastName: valData.lastName },
+            authInfo: { email: valData.email, password: valData.password },
             code: values.code,
           },
         });
 
         console.log('test', res);
-
-        const valData = location.state.values;
 
         // to generate the user token and ID and storing in the response
         const login = await axios.post(`${baseDevelopmentURL}/login`, {
