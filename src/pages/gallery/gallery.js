@@ -25,13 +25,17 @@ const Gallery = () => {
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
 
-  const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
-  const [sortMethod, setSortMethod] = useState(sortEnum.recent);
+  // const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
+  // const [sortMethod, setSortMethod] = useState(sortEnum.recent);
 
   const [searchString, setSearchString] = useState('');
+  const [filterByFavourites, setFilterByFavourites] = useState(false);
 
   const filteredCollections = () => {
     return [...selectedCollections].filter((collection) => {
+      if (filterByFavourites & !collection.favourite) {
+        return false;
+      }
       if (searchString === '') {
         return true;
       } else {
@@ -145,13 +149,13 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
     );
-    setSortMethod(sortEnum.recent);
+    // setSortMethod(sortEnum.recent);
   }
 
   function handleSortOnFrequency() {
     setCollections([...collections].sort((a, b) => b.click_count - a.click_count));
     setSelectedCollections([...selectedCollections].sort((a, b) => b.click_count - a.click_count));
-    setSortMethod(sortEnum.frequency);
+    // setSortMethod(sortEnum.frequency);
   }
 
   function handleSortOnCreation() {
@@ -161,25 +165,25 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     );
-    setSortMethod(sortEnum.created);
+    // setSortMethod(sortEnum.created);
   }
 
-  const sortCollections = () => {
-    switch (sortMethod) {
-      case sortEnum.recent:
-        console.log('sorting on recent');
-        handleSortOnRecent(collections);
-        break;
-      case sortEnum.frequency:
-        console.log('sorting on frequency');
-        handleSortOnFrequency(collections);
-        break;
-      case sortEnum.created:
-        console.log('sorting on creation');
-        handleSortOnCreation(collections);
-        break;
-    }
-  };
+  // const sortCollections = () => {
+  //   switch (sortMethod) {
+  //     case sortEnum.recent:
+  //       console.log('sorting on recent');
+  //       handleSortOnRecent(collections);
+  //       break;
+  //     case sortEnum.frequency:
+  //       console.log('sorting on frequency');
+  //       handleSortOnFrequency(collections);
+  //       break;
+  //     case sortEnum.created:
+  //       console.log('sorting on creation');
+  //       handleSortOnCreation(collections);
+  //       break;
+  //   }
+  // };
 
   const updateCollections = useCallback(async () => {
     const curCollections = await getCollections();
@@ -192,12 +196,12 @@ const Gallery = () => {
   useEffect(() => {
     let isSubscribed = true;
 
+    // function fixes initial loading of collections data
     const initialUpdateCollections = async () => {
       const curCollections = await getCollections();
       if (isSubscribed) {
         setCollections(curCollections);
         setSelectedCollections(curCollections);
-        // sortCollections(sortMethod);
         setBusy(false);
       }
     };
@@ -209,7 +213,6 @@ const Gallery = () => {
 
   // after selectedTags changed, to apply tags filter
   useEffect(() => {
-    console.log('handle tags apply');
     handleTagsApply().then();
   }, [collections]);
 
@@ -282,6 +285,33 @@ const Gallery = () => {
               </button>
             </div>
           </div>
+          <input
+            type="radio"
+            className="btn-check"
+            name="options-outlined"
+            id="primary-outlined"
+            autoComplete="off"
+            defaultChecked
+            onClick={() => setFilterByFavourites(false)}
+          />
+          <label className="btn btn-outline-primary" htmlFor="primary-outlined">
+            All
+          </label>
+
+          <input
+            type="radio"
+            className="btn-check"
+            name="options-outlined"
+            id="success-outlined"
+            autoComplete="off"
+          />
+          <label
+            className="btn btn-outline-success"
+            htmlFor="success-outlined"
+            onClick={() => setFilterByFavourites(true)}
+          >
+            Favourites
+          </label>
           <button
             className="btn btn-secondary"
             onClick={newCollectionOnclick}
@@ -297,7 +327,7 @@ const Gallery = () => {
           <div className="new-collection-container">
             <NewCollection
               onCancel={handleCancelCreate}
-              onSuccess={handleAfterCreate}
+              onSuccessName={handleAfterCreate}
             ></NewCollection>
           </div>
         ) : null}
