@@ -2,38 +2,54 @@ import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
-// import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
-  let user;
+export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState('/avatars/default.png');
+  var oldTags = [];
+
+  data.tags.forEach((tag) => {
+    oldTags.push(tag.name);
+  });
+  const tagString = oldTags.toString();
+
   const formik = useFormik({
     initialValues: {
-      uri: '',
-      name: 'new Link',
-      description: '',
+      name: data.name,
+      description: data.description,
+      tags: tagString,
+      image: '',
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
-      uri: Yup.string().required('You must enter a link'),
       name: Yup.string().required('You must enter a name'),
       description: Yup.string().required('You must enter a description'),
+      tags: Yup.string(),
     }),
     onSubmit: async (values) => {
       console.log(values);
       // alert(JSON.stringify(values, null, 2));
+      let formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      // formData.append('image', values.image);
+      formData.append('tags', values.tags);
+      // console.log(formData);
       axios
-        .post(
-          `${baseDevelopmentURL}/link/new`,
+        .put(
+          `${baseDevelopmentURL}/collection/${data._id}`,
           {
-            uri: values.uri,
-            name: values.name,
-            description: values.description,
-            collection_id: collectionId,
+            formData: {
+              name: values.name,
+              description: values.description,
+              tags: values.tags,
+              image: values.image,
+            },
           },
           {
             headers: {
@@ -45,19 +61,14 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
         )
         .then((response) => {
           setError('');
-          const data = response.data.data;
-          console.log(data);
-          console.log('successfully created link!!!');
+          const collection = response.data.data.collection;
+          console.log(collection);
           onSuccess().then();
-          // localStorage.setItem('userName', user.name.first);
-          // localStorage.setItem('userNameLast', user.name.last);
-          // setFirstName(user.name.first);
         })
         .catch((err) => {
           console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
-          // console.log(error);
           const errCode = err.response.status;
           if (errCode === 401) {
             localStorage.clear();
@@ -68,11 +79,10 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
   });
 
   return (
-    <div className="new-box">
-      <h1 className="details-title ">Create a new link</h1>
+    <div>
       <form onSubmit={formik.handleSubmit}>
         <div className="mt3">
-          <label className="black">Name</label>
+          <label className="black">Title</label>
           <input
             type="text"
             name="name"
@@ -100,23 +110,50 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           )}
         </div>
         <div className="mt3">
-          <label className="black">URI</label>
+          <label className="black">Tags</label>
           <input
             type="text"
-            name="uri"
-            value={formik.values.uri}
+            name="tags"
+            value={formik.values.tags}
             onChange={formik.handleChange}
-            placeholder="Enter uri"
+            placeholder="Enter tags"
             className="input-box-container input-reset"
           />
-          {formik.errors.uri && formik.touched.uri && (
-            <p className="input-error">{formik.errors.uri}</p>
+          {formik.errors.tags && formik.touched.tags && (
+            <p className="input-error">{formik.errors.tags}</p>
           )}
+        </div>
+        <div className="mv3">
+          <label className="black">Image</label>
+          <input
+            id="file"
+            name="image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const fileReader = new FileReader();
+              fileReader.onload = () => {
+                if (fileReader.readyState === 2) {
+                  formik.setFieldValue('image', fileReader.result);
+                  console.log(fileReader.result);
+                  setAvatarPreview(fileReader.result);
+                }
+              };
+              fileReader.readAsDataURL(e.target.files[0]);
+            }}
+            className="form-control"
+          />
+          {formik.errors.image && formik.touched.image && (
+            <p className="input-error">{formik.errors.image}</p>
+          )}
+        </div>
+        <div className="image-container">
+          <img className="image" src={avatarPreview} alt="" />
         </div>
         {error && <p className="submit-error">{error}</p>}
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
-            Create Link
+            Update
           </button>
           <button id="login" className="solid-buttton" onClick={onCancel}>
             Cancel

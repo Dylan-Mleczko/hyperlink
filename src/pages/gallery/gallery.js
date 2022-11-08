@@ -2,7 +2,8 @@ import { React, useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
-
+import { toast } from 'react-toastify';
+sssssssssssssssssssssssssssssssssssss
 import { Header } from '../../components/Header';
 import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import { baseDevelopmentURL } from '../../utils/constants';
@@ -12,6 +13,7 @@ import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 import { Title } from '../../components/Title/Title';
 import { select } from 'react-cookies';
+import { EditBox } from '../../components/editBox/EditBox';
 
 const Gallery = () => {
   const location = useLocation();
@@ -24,6 +26,7 @@ const Gallery = () => {
   const [tags, setTags] = useState([]);
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
+  const [displayCollection, setDisplayCollection] = useState({});
 
   // const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
   // const [sortMethod, setSortMethod] = useState(sortEnum.recent);
@@ -48,8 +51,75 @@ const Gallery = () => {
     document.title = 'HyperLink - Gallery';
   }, []);
 
+  const handleEdit = (collectionItem) => {
+    // alert(JSON.stringify(linkItem));
+    setDisplayCollection(collectionItem);
+    document.getElementById('displayButton').click();
+    // displayButton
+  };
+
+  const handleDeleteCollection = () => {
+    axios
+      .delete(`${baseDevelopmentURL}/collection/${displayCollection._id}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log('successfully deleted collection!!!');
+        setDisplayCollection({});
+        toast.success('Collection Deleted!', {
+          position: 'top-center',
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: 'delete',
+        });
+        handleAfterUpdate();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.data) {
+          toast.error(err.response.data.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        } else {
+          toast.error(err.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        }
+        const errCode = err.response.status;
+        if (errCode === 401) {
+          localStorage.clear();
+          navigate('/');
+        }
+      });
+  };
+
+  const handleAfterUpdate = async () => {
+    await fetchCollections();
+  };
+
   const getCollections = async () => {
-    console.log('fetching collections');
     var curCollections = null;
     await axios
       .get(`${baseDevelopmentURL}/collection/all`, {
@@ -367,10 +437,18 @@ const Gallery = () => {
             <CollectionBox
               collections={filteredCollections()}
               favouriteCollection={favouriteCollection}
+              handleEdit={handleEdit}
             ></CollectionBox>
           )}
         </div>
       </div>
+      <EditBox
+        isLink={false}
+        title={displayCollection.name}
+        data={displayCollection}
+        onUpdate={handleAfterUpdate}
+        onDelete={handleDeleteCollection}
+      ></EditBox>
     </div>
   );
 };

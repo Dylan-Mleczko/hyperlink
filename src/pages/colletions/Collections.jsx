@@ -1,14 +1,16 @@
 import { React, useState, useEffect } from 'react';
 import { Header } from '../../components/Header';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Title } from '../../components/Title/Title';
 import { baseDevelopmentURL } from '../../utils/constants/index';
 import { CollectionItem } from '../../components/collectionItem/collectionItem';
 import { LinkPreview } from '@dhaiwat10/react-link-preview';
+import { toast } from 'react-toastify';
 import './styles.css';
 import axios from 'axios';
 import { NewLink } from '../../components/newLink/NewLink';
 import { ThreeDots } from 'react-loader-spinner';
+import { EditBox } from '../../components/editBox/EditBox';
 
 const Collections = () => {
   // const [items, setItems] = useState([]);
@@ -16,10 +18,10 @@ const Collections = () => {
   const [isBusy, setBusy] = useState(true);
   const [displayLink, setDisplayLink] = useState({});
   const [isNewLink, setIsNewLink] = useState(false);
-  const [isDisplay, setDisplay] = useState(false);
 
   // const [itemsLoaded, setItemsLoaded] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   // console.log(collectionId);
   const collection = location?.state?.collection;
   const collectionId = collection._id;
@@ -69,16 +71,77 @@ const Collections = () => {
     setIsNewLink(false);
   };
 
+  const handleDeleteLink = () => {
+    axios
+      .delete(`${baseDevelopmentURL}/link/${displayLink._id}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log('successfully deleted link!!!');
+        setDisplayLink({});
+        toast.success('Link Deleted!', {
+          position: 'top-center',
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: 'delete',
+        });
+        handleAfterUpdate();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.data) {
+          toast.error(err.response.data.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        } else {
+          toast.error(err.message, {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            toastId: 'delete',
+          });
+        }
+        const errCode = err.response.status;
+        if (errCode === 401) {
+          localStorage.clear();
+          navigate('/');
+        }
+      });
+  };
+
   const handleAfterCreate = async () => {
     const links = await fetchLinks();
     setLinks(links);
     setIsNewLink(false);
   };
 
+  const handleAfterUpdate = async () => {
+    const links = await fetchLinks();
+    setLinks(links);
+  };
+
   const showDetail = (linkItem) => {
     // alert(JSON.stringify(linkItem));
     setDisplayLink(linkItem);
-    setDisplay(true);
     document.getElementById('displayButton').click();
     // displayButton
   };
@@ -148,40 +211,13 @@ const Collections = () => {
             </tbody>
           </table>
         </div>
-        <button
-          id="displayButton"
-          type="button"
-          className="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModal"
-          style={{ display: 'none' }}
-        >
-          Launch demo modal
-        </button>
-
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  {displayLink.name}
-                </h5>
-              </div>
-              <div className="modal-body">{displayLink.description}</div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EditBox
+          title={displayLink.name}
+          data={displayLink}
+          onUpdate={handleAfterUpdate}
+          onDelete={handleDeleteLink}
+          isLink={true}
+        ></EditBox>
       </div>
     </div>
   );
