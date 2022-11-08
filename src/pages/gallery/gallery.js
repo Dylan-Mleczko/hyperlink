@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useLayoutEffect } from 'react';
+import { React, useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
@@ -24,11 +24,15 @@ const Gallery = () => {
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
 
+  const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
+  var sortMethod = sortEnum.recent;
+
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
   }, []);
 
-  const updateCollections = async () => {
+  const getCollections = async () => {
+    console.log('fetching collections');
     var curCollections = null;
     await axios
       .get(`${baseDevelopmentURL}/collection/all`, {
@@ -40,7 +44,6 @@ const Gallery = () => {
         // withCredentials: true,
       })
       .then((response) => {
-        setCollections(response.data.data.collections);
         curCollections = response.data.data.collections;
 
         const u_tags = [];
@@ -56,12 +59,13 @@ const Gallery = () => {
               u_tags.push(tag);
             }
           });
-        console.log('tags: ', u_tags);
+        // console.log('Tags: ', u_tags);
         setTags(u_tags);
       })
       .catch((error) => {
         console.log(error);
       });
+    console.log('got everything');
     return curCollections;
   };
 
@@ -93,7 +97,7 @@ const Gallery = () => {
 
   const favouriteCollection = async (collection) => {
     console.log('update collection favourited', collection.name);
-    axios
+    await axios
       .put(
         `${baseDevelopmentURL}/collection/${collection._id}`,
         { collectionDetails: { favourite: !collection.favourite } },
@@ -107,7 +111,7 @@ const Gallery = () => {
       )
       .then((response) => {
         console.log(response);
-        updateCollections().then();
+        getCollections().then();
       })
       .catch((error) => {
         console.log(error);
@@ -122,51 +126,83 @@ const Gallery = () => {
     setIsNewCollection(false);
   };
 
-  const fetchCollections = async () => {
-    const curCollections = await updateCollections();
-    setCollections(curCollections);
-    setSelectedCollections(curCollections);
-    setBusy(false);
-  };
-
   function handleSortOnRecent() {
-    const newSelectedCollections = [...selectedCollections].sort(
-      (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+    setCollections(
+      [...collections].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
     );
-    setSelectedCollections(newSelectedCollections);
+    setSelectedCollections(
+      [...selectedCollections].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+    );
+    sortMethod = sortEnum.recent;
   }
 
   function handleSortOnFrequency() {
-    const newSelectedCollection = [...selectedCollections].sort(
-      (a, b) => b.click_count - a.click_count
-    );
-    setSelectedCollections(newSelectedCollection);
+    setCollections([...collections].sort((a, b) => b.click_count - a.click_count));
+    setSelectedCollections([...selectedCollections].sort((a, b) => b.click_count - a.click_count));
+    sortMethod = sortEnum.frequency;
   }
 
   function handleSortOnCreation() {
-    console.log('sorting collections on creation');
-    console.log(
-      'sorted collections = ',
-      selectedCollections.sort((a, b) => new Date(b.create_at) - new Date(a.create_at))
+    setCollections(
+      [...collections].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     );
     setSelectedCollections(
-      selectedCollections.sort((a, b) => new Date(b.create_at) - new Date(a.create_at))
+      [...selectedCollections].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     );
+    sortMethod = sortEnum.created;
   }
 
-  useEffect(() => {
-    if (isBusy) {
-      fetchCollections();
+  const sortCollections = () => {
+    switch (sortMethod) {
+      case sortEnum.recent:
+        console.log('sorting on recent');
+        handleSortOnRecent(collections);
+        break;
+      case sortEnum.frequency:
+        console.log('sorting on frequency');
+        handleSortOnFrequency(collections);
+        break;
+      case sortEnum.created:
+        console.log('sorting on creation');
+        handleSortOnCreation(collections);
+        break;
     }
-  }, [selectedCollections]);
+  };
 
-  //after selectedTags changed, to apply tags filter
+  const updateCollections = useCallback(async () => {
+    const curCollections = await getCollections();
+    setCollections(curCollections);
+    setSelectedCollections(curCollections);
+    // sortCollections(sortMethod);
+    setBusy(false);
+  }, []);
+
   useEffect(() => {
-    handleTagsApply().then();
+    let isSubscribed = true;
+
+    const initialUpdateCollections = async () => {
+      const curCollections = await getCollections();
+      if (isSubscribed) {
+        setCollections(curCollections);
+        setSelectedCollections(curCollections);
+        // sortCollections(sortMethod);
+        setBusy(false);
+      }
+    };
+
+    initialUpdateCollections().catch(console.error);
+
+    return () => (isSubscribed = false);
+  }, []);
+
+  // after selectedTags changed, to apply tags filter
+  useEffect(() => {
+    console.log('handle tags apply');
+    // handleTagsApply().then();
   }, [collections]);
 
   const handleAfterCreate = async () => {
-    await fetchCollections();
+    await updateCollections();
     setIsNewCollection(false);
   };
 
