@@ -30,17 +30,12 @@ const Gallery = () => {
 
   const [searchString, setSearchString] = useState('');
 
-  let inputHandler = (e) => {
-    const lowerCase = e.target.value.toLowerCase();
-    setSearchString(lowerCase);
-  };
-
   const filteredCollections = () => {
-    return selectedCollections.filter((e) => {
+    return [...selectedCollections].filter((collection) => {
       if (searchString === '') {
-        return e;
+        return true;
       } else {
-        return e.text.includes(inputString);
+        return collection.name.toLowerCase().includes(searchString);
       }
     });
   };
@@ -244,7 +239,7 @@ const Gallery = () => {
             className="form-control"
             placeholder="Search Collections"
             aria-label="Search"
-            onChange={inputHandler}
+            onChange={(e) => setSearchString(e.target.value.toLowerCase())}
           />
         </div>
         {/* <div className="input-group rounded">
@@ -340,7 +335,7 @@ const Gallery = () => {
             />
           ) : (
             <CollectionBox
-              collections={selectedCollections}
+              collections={filteredCollections()}
               favouriteCollection={favouriteCollection}
             ></CollectionBox>
           )}
