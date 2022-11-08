@@ -33,6 +33,7 @@ const Gallery = () => {
   const [filterByFavourites, setFilterByFavourites] = useState(false);
 
   const filteredCollections = () => {
+    if (!selectedCollections || selectedCollections.length == 0) return [];
     return [...selectedCollections].filter((collection) => {
       if (filterByFavourites & !collection.favourite) {
         return false;
@@ -70,7 +71,7 @@ const Gallery = () => {
         setDisplayCollection({});
         toast.success('Collection Deleted!', {
           position: 'top-center',
-          autoClose: false,
+          autoClose: true,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -114,7 +115,7 @@ const Gallery = () => {
   };
 
   const handleAfterUpdate = async () => {
-    await fetchCollections();
+    await updateCollections();
   };
 
   const getCollections = async () => {
@@ -360,17 +361,20 @@ const Gallery = () => {
               </button>
             </div>
           </div>
-          <input
-            type="radio"
-            className="btn-check"
-            name="options-outlined"
-            id="primary-outlined"
-            autoComplete="off"
-            defaultChecked
-            onClick={() => setFilterByFavourites(false)}
-          />
           <div>
-            <label className="btn btn-outline-primary" htmlFor="primary-outlined">
+            <input
+              type="radio"
+              className="btn-check"
+              name="options-outlined"
+              id="primary-outlined"
+              autoComplete="off"
+              checkedDefault
+            />
+            <label
+              className="btn btn-outline-primary"
+              htmlFor="primary-outlined"
+              onClick={() => setFilterByFavourites(false)}
+            >
               All
             </label>
 
@@ -404,42 +408,34 @@ const Gallery = () => {
           <div className="new-collection-container">
             <NewCollection
               onCancel={handleCancelCreate}
-              onSuccessName={handleAfterCreate}
+              onSuccess={handleAfterCreate}
             ></NewCollection>
           </div>
         ) : null}
         <div>
-          {isBusy && !isFilterBoxDisplay ? (
-            <ThreeDots
-              height="100"
-              width="100"
-              radius="9"
-              color="green"
-              ariaLabel="three-dots-loading"
-              wrapperStyle
-              wrapperclassName="loader"
-            />
-          ) : (
-            isFilterBoxDisplay && (
-              <TagFilterBox
-                tags={tags}
-                handleApplyClick={handleTagsApply}
-                handleCancelClick={removeTagsFilter}
-              ></TagFilterBox>
-            )
-          )}
+          {isBusy && !isFilterBoxDisplay
+            ? null
+            : isFilterBoxDisplay && (
+                <TagFilterBox
+                  tags={tags}
+                  handleApplyClick={handleTagsApply}
+                  handleCancelClick={removeTagsFilter}
+                ></TagFilterBox>
+              )}
         </div>
         <div>
           {isBusy ? (
-            <ThreeDots
-              height="100"
-              width="100"
-              radius="9"
-              color="green"
-              ariaLabel="three-dots-loading"
-              wrapperStyle
-              wrapperclassName="loader"
-            />
+            <div className="loaderDotsIcon">
+              <ThreeDots
+                height="100"
+                width="100"
+                radius="9"
+                color="green"
+                ariaLabel="three-dots-loading"
+                wrapperStyle
+                wrapperclassName="loader"
+              />
+            </div>
           ) : (
             <CollectionBox
               collections={filteredCollections()}

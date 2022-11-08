@@ -18,8 +18,8 @@ export const EditBox = ({ title, data, onUpdate, onDelete, isLink }) => {
     setIsEdit(false);
   };
 
-  const handleUpdate = () => {
-    onUpdate();
+  const handleUpdate = async () => {
+    await onUpdate();
     setIsEdit(false);
     document.getElementById('closeButton').click();
   };
@@ -77,25 +77,24 @@ export const EditBox = ({ title, data, onUpdate, onDelete, isLink }) => {
             ) : (
               <div className="modal-body">{data.description}</div>
             )}
-            {isEdit ? null : (
-              <div className="modal-footer">
-                <button type="button" class="btn btn-danger" onClick={handleDelete}>
-                  Delete
-                </button>
-                <button type="button" class="btn btn-primary" onClick={EditOnclick}>
-                  Edit
-                </button>
-                <button
-                  id="closeButton"
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={handleCloseBox}
-                >
-                  Close
-                </button>
-              </div>
-            )}
+
+            <div className="modal-footer" style={{ display: isEdit ? 'none' : 'block' }}>
+              <button type="button" class="btn btn-danger" onClick={handleDelete}>
+                Delete
+              </button>
+              <button type="button" class="btn btn-primary" onClick={EditOnclick}>
+                Edit
+              </button>
+              <button
+                id="closeButton"
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+                onClick={handleCloseBox}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

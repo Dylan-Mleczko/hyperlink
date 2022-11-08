@@ -5,6 +5,7 @@ import { baseDevelopmentURL } from '../../utils/constants';
 // import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { Circles } from 'react-loader-spinner';
 
 import * as Yup from 'yup';
 
@@ -13,6 +14,7 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState('/avatars/default.png');
+  const [isUploading, setIsUploading] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: 'new collection',
@@ -27,7 +29,8 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
       // image: Yup.mixed(),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
+      setIsUploading(true);
       // alert(JSON.stringify(values, null, 2));
       let formData = new FormData();
       formData.append('name', values.name);
@@ -60,14 +63,16 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
           const collection = response.data.data.collection;
           console.log(collection);
           onSuccess().then();
+          setIsUploading(false);
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
           // setFirstName(user.name.first);
         })
         .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
-          // console.log(error);
           const errCode = err.response.status;
           if (errCode === 401) {
             localStorage.clear();
@@ -155,6 +160,17 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
           <img className="image" src={avatarPreview || user?.avatar} alt="" />
         </div>
         {error && <p className="submit-error">{error}</p>}
+        <div className="loadingIcon">
+          <Circles
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={isUploading}
+          />
+        </div>
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
             Create Collection

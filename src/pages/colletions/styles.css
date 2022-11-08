@@ -50,3 +50,8 @@ th:last-child {
   max-width: 20rem;
   /* border:solid 1px green ; */
 }
+
+.loadingDotsIcon {
+  position: relative;
+  margin-left: 40%;
+}

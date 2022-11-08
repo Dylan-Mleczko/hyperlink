@@ -4,7 +4,7 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 // import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import React, { useState } from 'react';
-import { MagnifyingGlass } from 'react-loader-spinner';
+import { MagnifyingGlass, Circles } from 'react-loader-spinner';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [isScraping, setIsScraping] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const formik = useFormik({
     initialValues: {
       uri: '',
@@ -26,7 +27,8 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
       description: Yup.string().required('You must enter a description'),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
+      setIsUploading(true);
       // alert(JSON.stringify(values, null, 2));
       axios
         .post(
@@ -51,11 +53,13 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           console.log(data);
           console.log('successfully created link!!!');
           onSuccess().then();
+          setIsUploading(false);
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
           // setFirstName(user.name.first);
         })
         .catch((err) => {
+          setIsUploading(false);
           console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
@@ -190,6 +194,17 @@ export const NewLink = ({ onCancel, collectionId, onSuccess }) => {
           )}
         </div>
         {error && <p className="submit-error">{error}</p>}
+        <div className="loadingIcon">
+          <Circles
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={isUploading}
+          />
+        </div>
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
             Create Link
