@@ -26,8 +26,8 @@ const Gallery = () => {
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
   const [displayCollection, setDisplayCollection] = useState({});
 
-  // const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
-  // const [sortMethod, setSortMethod] = useState(sortEnum.recent);
+  const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
+  const [sortMethod, setSortMethod] = useState(sortEnum.recent);
 
   const [searchString, setSearchString] = useState('');
   const [filterByFavourites, setFilterByFavourites] = useState(false);
@@ -144,7 +144,6 @@ const Gallery = () => {
               u_tags.push(tag);
             }
           });
-        // console.log('Tags: ', u_tags);
         setTags(u_tags);
       })
       .catch((error) => {
@@ -154,14 +153,12 @@ const Gallery = () => {
   };
 
   const handleTagsApply = async () => {
-    // console.log('filtering by tags');
     if (selectedTags.length === 0) {
       setSelectedCollections(collections);
       return;
     }
 
     setSelectedCollections(
-      // console.log(selectedTags);
       [...collections].filter((collection) => {
         return collection.tags.map((tag) => tag.name).some((tag) => selectedTags?.includes(tag));
       })
@@ -190,7 +187,19 @@ const Gallery = () => {
       )
       .then((response) => {
         console.log(response);
-        updateCollections();
+
+        // update favourite value of collections
+        var newCollections = [...collections];
+        console.log(collection.name);
+        const id = newCollections.findIndex((c) => c.name == collection.name);
+        newCollections[id].favourite = response.data.data.collection.favourite;
+        setCollections(newCollections);
+
+        // update favourite value of selected collections if the collection is there
+        var newSelectedCollections = [...selectedCollections];
+        const selectedId = newSelectedCollections.findIndex((c) => c.name == collection.name);
+        newSelectedCollections[selectedId].favourite = response.data.data.collection.favourite;
+        setSelectedCollections(newSelectedCollections);
       })
       .catch((error) => {
         console.log(error);
@@ -212,13 +221,13 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
     );
-    // setSortMethod(sortEnum.recent);
+    setSortMethod(sortEnum.recent);
   }
 
   function handleSortOnFrequency() {
     setCollections([...collections].sort((a, b) => b.click_count - a.click_count));
     setSelectedCollections([...selectedCollections].sort((a, b) => b.click_count - a.click_count));
-    // setSortMethod(sortEnum.frequency);
+    setSortMethod(sortEnum.frequency);
   }
 
   function handleSortOnCreation() {
@@ -228,32 +237,34 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     );
-    // setSortMethod(sortEnum.created);
+    setSortMethod(sortEnum.created);
   }
 
-  // const sortCollections = () => {
-  //   switch (sortMethod) {
-  //     case sortEnum.recent:
-  //       console.log('sorting on recent');
-  //       handleSortOnRecent(collections);
-  //       break;
-  //     case sortEnum.frequency:
-  //       console.log('sorting on frequency');
-  //       handleSortOnFrequency(collections);
-  //       break;
-  //     case sortEnum.created:
-  //       console.log('sorting on creation');
-  //       handleSortOnCreation(collections);
-  //       break;
-  //   }
-  // };
+  const sortCollections = () => {
+    console.log('sort method', sortMethod);
+    switch (sortMethod) {
+      case sortEnum.recent:
+        console.log('sorting on recent');
+        handleSortOnRecent();
+        break;
+      case sortEnum.frequency:
+        console.log('sorting on frequency');
+        handleSortOnFrequency();
+        break;
+      case sortEnum.created:
+        console.log('sorting on creation');
+        handleSortOnCreation();
+        break;
+    }
+  };
 
   const updateCollections = useCallback(async () => {
     const curCollections = await getCollections();
     console.log('got collections', curCollections);
     setCollections(curCollections);
     setSelectedCollections(curCollections);
-    // sortCollections(sortMethod);
+    console.log('update collections');
+    // sortCollections();
     setBusy(false);
   }, []);
 
