@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
-sssssssssssssssssssssssssssssssssssss
 import { Header } from '../../components/Header';
 import { TagFilterBox } from '../../components/tagFilterBox/TagFilterBox';
 import { baseDevelopmentURL } from '../../utils/constants';
@@ -12,7 +11,6 @@ import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 import { Title } from '../../components/Title/Title';
-import { select } from 'react-cookies';
 import { EditBox } from '../../components/editBox/EditBox';
 
 const Gallery = () => {
@@ -163,16 +161,11 @@ const Gallery = () => {
     }
 
     setSelectedCollections(
-      collections.filter((collection) => {
-        for (const tag of collection.tags) {
-          if (selectedTags.includes(tag.name)) {
-            return true;
-          }
-        }
-        return false;
+      // console.log(selectedTags);
+      [...collections].filter((collection) => {
+        return collection.tags.map((tag) => tag.name).some((tag) => selectedTags?.includes(tag));
       })
     );
-    console.log('found', selectedCollections);
   };
 
   const removeTagsFilter = async () => {
@@ -305,16 +298,6 @@ const Gallery = () => {
       <div className="content">
         <div className="fix-padding"></div>
         <Title text="Gallery" />
-        <div className="form-outline">
-          <input
-            type="search"
-            id="form1"
-            className="form-control"
-            placeholder="Search Collections"
-            aria-label="Search"
-            onChange={(e) => setSearchString(e.target.value.toLowerCase())}
-          />
-        </div>
         {/* <div className="input-group rounded">
           <input
             type="search"
@@ -331,6 +314,16 @@ const Gallery = () => {
           <button className="btn btn-secondary" onClick={filterBoxOnclick} width="fit-content">
             Filter By Tags
           </button>
+          <div className="form-outline">
+            <input
+              type="search"
+              id="form1"
+              className="form-control"
+              placeholder="Search Collections"
+              aria-label="Search"
+              onChange={(e) => setSearchString(e.target.value.toLowerCase())}
+            />
+          </div>
           <div className="dropdown">
             <button
               className="btn btn-secondary dropdown-toggle"
@@ -364,24 +357,26 @@ const Gallery = () => {
             defaultChecked
             onClick={() => setFilterByFavourites(false)}
           />
-          <label className="btn btn-outline-primary" htmlFor="primary-outlined">
-            All
-          </label>
+          <div>
+            <label className="btn btn-outline-primary" htmlFor="primary-outlined">
+              All
+            </label>
 
-          <input
-            type="radio"
-            className="btn-check"
-            name="options-outlined"
-            id="success-outlined"
-            autoComplete="off"
-          />
-          <label
-            className="btn btn-outline-success"
-            htmlFor="success-outlined"
-            onClick={() => setFilterByFavourites(true)}
-          >
-            Favourites
-          </label>
+            <input
+              type="radio"
+              className="btn-check"
+              name="options-outlined"
+              id="success-outlined"
+              autoComplete="off"
+            />
+            <label
+              className="btn btn-outline-success"
+              htmlFor="success-outlined"
+              onClick={() => setFilterByFavourites(true)}
+            >
+              Favourites
+            </label>
+          </div>
           <button
             className="btn btn-secondary"
             onClick={newCollectionOnclick}
