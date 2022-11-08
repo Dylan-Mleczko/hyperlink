@@ -184,7 +184,7 @@ const Collections = () => {
                   color="green"
                   ariaLabel="three-dots-loading"
                   wrapperStyle
-                  wrapperClass="loader"
+                  wrapperclassName="loader"
                 />
               ) : (
                 links?.map((item) => (

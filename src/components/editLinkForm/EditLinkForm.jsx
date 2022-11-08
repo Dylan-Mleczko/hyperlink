@@ -5,12 +5,14 @@ import { baseDevelopmentURL } from '../../utils/constants';
 // import { baseDevelopmentURL, LOGIN, SIGNUP } from '../utils/constants/index';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { Circles } from 'react-loader-spinner';
 
 import * as Yup from 'yup';
 
 export const EditLinkForm = ({ onCancel, onSuccess, data }) => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   console.log(data);
 
   const formik = useFormik({
@@ -26,6 +28,7 @@ export const EditLinkForm = ({ onCancel, onSuccess, data }) => {
       description: Yup.string().required('You must enter a description'),
     }),
     onSubmit: async (values) => {
+      setIsUploading(true);
       // console.log(values);
       // alert(JSON.stringify(values, null, 2));
       axios
@@ -51,11 +54,13 @@ export const EditLinkForm = ({ onCancel, onSuccess, data }) => {
           const data = response.data.data;
           console.log('successfully updated link!!!');
           onSuccess().then();
+          setIsUploading(false);
           // localStorage.setItem('userName', user.name.first);
           // localStorage.setItem('userNameLast', user.name.last);
           // setFirstName(user.name.first);
         })
         .catch((err) => {
+          setIsUploading(false);
           console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
@@ -115,6 +120,17 @@ export const EditLinkForm = ({ onCancel, onSuccess, data }) => {
           )}
         </div>
         {error && <p className="submit-error">{error}</p>}
+        <div className="loadingIcon">
+          <Circles
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={isUploading}
+          />
+        </div>
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
             Update

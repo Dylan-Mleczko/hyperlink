@@ -37,3 +37,8 @@
 #autoFill {
   margin-top: 0.5rem;
 }
+
+.loadingIcon {
+  position: relative;
+  margin-left: 40%;
+}

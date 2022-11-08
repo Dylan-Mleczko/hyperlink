@@ -4,6 +4,7 @@ import axios from 'axios';
 import { baseDevelopmentURL } from '../../utils/constants';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { Circles } from 'react-loader-spinner';
 
 import * as Yup from 'yup';
 
@@ -11,6 +12,7 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState('/avatars/default.png');
+  const [isUploading, setIsUploading] = useState(false);
   var oldTags = [];
 
   data.tags.forEach((tag) => {
@@ -32,8 +34,9 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
       tags: Yup.string(),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      // console.log(values);
       // alert(JSON.stringify(values, null, 2));
+      setIsUploading(true);
       let formData = new FormData();
       formData.append('name', values.name);
       formData.append('description', values.description);
@@ -64,8 +67,10 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
           const collection = response.data.data.collection;
           console.log(collection);
           onSuccess().then();
+          setIsUploading(false);
         })
         .catch((err) => {
+          setIsUploading(false);
           console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
@@ -151,6 +156,17 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
           <img className="image" src={avatarPreview} alt="" />
         </div>
         {error && <p className="submit-error">{error}</p>}
+        <div className="loadingIcon">
+          <Circles
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={isUploading}
+          />
+        </div>
         <div className="button-container">
           <button type="submit" id="login" className="solid-buttton">
             Update

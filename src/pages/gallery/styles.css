@@ -25,3 +25,8 @@
 .form-outline {
   width: 20rem;
 }
+
+.loaderDotsIcon {
+  position: relative;
+  margin-left: 40%;
+}
