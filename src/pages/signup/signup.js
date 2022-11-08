@@ -15,6 +15,7 @@ const SignUp = (props) => {
   const [user, setUser] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -66,12 +67,28 @@ const SignUp = (props) => {
           },
         });
 
+        // to generate the user token and ID and storing in the response
+        const login = await axios.post(`${baseDevelopmentURL}/login`, {
+          data: {
+            email: values.email,
+            password: values.password,
+          },
+        });
+
+        const user = login.data.user;
+
+        localStorage.setItem('access_token', user.token);
+        localStorage.setItem('userName', user.name.first);
+        localStorage.setItem('userNameLast', user.name.last);
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userEmail', user.email);
+
         // res.data.data.user['id'] = login.data.user.id;
         // res.data.data.user['token'] = login.data.user.token;
 
-        // setLoggedIn(true);
-        // setUser(user);
-        navigate('/verify/email', { state: { values } });
+        setLoggedIn(true);
+        setUser(user);
+        navigate('/gallery', { state: { user } });
       } catch (err) {
         setErrorMessage(err.message);
         setError(true);
