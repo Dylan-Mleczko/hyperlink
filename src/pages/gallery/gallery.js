@@ -190,7 +190,7 @@ const Gallery = () => {
       )
       .then((response) => {
         console.log(response);
-        getCollections().then();
+        updateCollections();
       })
       .catch((error) => {
         console.log(error);
@@ -250,6 +250,7 @@ const Gallery = () => {
 
   const updateCollections = useCallback(async () => {
     const curCollections = await getCollections();
+    console.log('got collections', curCollections);
     setCollections(curCollections);
     setSelectedCollections(curCollections);
     // sortCollections(sortMethod);
