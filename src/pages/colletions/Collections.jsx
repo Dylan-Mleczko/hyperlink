@@ -19,14 +19,13 @@ const Collections = () => {
   const [displayLink, setDisplayLink] = useState({});
   const [isNewLink, setIsNewLink] = useState(false);
 
-  // const
   // const [itemsLoaded, setItemsLoaded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   // console.log(collectionId);
   const collection = location?.state?.collection;
   const collectionId = collection._id;
-  console.log(collection);
+  // console.log(collection);
 
   const fetchLinks = async () => {
     var links = null;
@@ -40,11 +39,9 @@ const Collections = () => {
           },
         })
         .then((response) => {
-          // console.log();
           // setLinks(response.data.data);
           links = response.data.data.links;
           console.log(links);
-          console.log('it worked!!!');
         });
       // let json = await response.json();
       // return { success: true, data: response.data.data };
