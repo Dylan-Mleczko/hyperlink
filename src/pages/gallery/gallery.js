@@ -11,6 +11,7 @@ import { CollectionBox } from '../../components/collectionBox/CollectionBox';
 import { NewCollection } from '../../components/newCollection/NewCollection';
 import './styles.css';
 import { Title } from '../../components/Title/Title';
+import { select } from 'react-cookies';
 
 const Gallery = () => {
   const location = useLocation();
@@ -25,7 +26,24 @@ const Gallery = () => {
   const [isFilterBoxDisplay, setIsFilterBoxDisplay] = useState(false);
 
   const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
-  var sortMethod = sortEnum.recent;
+  const [sortMethod, setSortMethod] = useState(sortEnum.recent);
+
+  const [searchString, setSearchString] = useState('');
+
+  let inputHandler = (e) => {
+    const lowerCase = e.target.value.toLowerCase();
+    setSearchString(lowerCase);
+  };
+
+  const filteredCollections = () => {
+    return selectedCollections.filter((e) => {
+      if (searchString === '') {
+        return e;
+      } else {
+        return e.text.includes(inputString);
+      }
+    });
+  };
 
   useEffect(() => {
     document.title = 'HyperLink - Gallery';
@@ -65,7 +83,6 @@ const Gallery = () => {
       .catch((error) => {
         console.log(error);
       });
-    console.log('got everything');
     return curCollections;
   };
 
@@ -133,13 +150,13 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
     );
-    sortMethod = sortEnum.recent;
+    setSortMethod(sortEnum.recent);
   }
 
   function handleSortOnFrequency() {
     setCollections([...collections].sort((a, b) => b.click_count - a.click_count));
     setSelectedCollections([...selectedCollections].sort((a, b) => b.click_count - a.click_count));
-    sortMethod = sortEnum.frequency;
+    setSortMethod(sortEnum.frequency);
   }
 
   function handleSortOnCreation() {
@@ -149,7 +166,7 @@ const Gallery = () => {
     setSelectedCollections(
       [...selectedCollections].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     );
-    sortMethod = sortEnum.created;
+    setSortMethod(sortEnum.created);
   }
 
   const sortCollections = () => {
@@ -198,7 +215,7 @@ const Gallery = () => {
   // after selectedTags changed, to apply tags filter
   useEffect(() => {
     console.log('handle tags apply');
-    // handleTagsApply().then();
+    handleTagsApply().then();
   }, [collections]);
 
   const handleAfterCreate = async () => {
@@ -220,6 +237,28 @@ const Gallery = () => {
       <div className="content">
         <div className="fix-padding"></div>
         <Title text="Gallery" />
+        <div className="form-outline">
+          <input
+            type="search"
+            id="form1"
+            className="form-control"
+            placeholder="Search Collections"
+            aria-label="Search"
+            onChange={inputHandler}
+          />
+        </div>
+        {/* <div className="input-group rounded">
+          <input
+            type="search"
+            className="form-control rounded"
+            placeholder="Search Collections"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+          <span className="input-group-text border-0" id="search-addon">
+            <i className="fas fa-search"></i>
+          </span>
+        </div> */}
         <div className="action-container">
           <button className="btn btn-secondary" onClick={filterBoxOnclick} width="fit-content">
             Filter By Tags

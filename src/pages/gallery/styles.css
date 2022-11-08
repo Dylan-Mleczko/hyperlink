@@ -17,10 +17,9 @@
 
 .action-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding-left: 2rem;
   padding-right: 2rem;
-  width: 70%;
 }
 
 .dropdown {
