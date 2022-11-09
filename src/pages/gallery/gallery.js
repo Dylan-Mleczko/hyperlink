@@ -393,14 +393,7 @@ const Gallery = () => {
               Favourites
             </label>
           </div>
-          <button
-            className="btn btn-secondary"
-            onClick={newCollectionOnclick}
-            // position="absolute"
-            // margin-bottom="5rem"
-            // right="19%"
-            // className="new-collection-button"
-          >
+          <button className="btn btn-secondary" onClick={newCollectionOnclick}>
             + New Collection
           </button>
         </div>
