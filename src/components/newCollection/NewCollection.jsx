@@ -69,7 +69,7 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
           // setFirstName(user.name.first);
         })
         .catch((err) => {
-          setIsLoading(false);
+          setIsUploading(false);
           console.log(err);
           if (err.response.data) setError(err.response.data.message);
           else setError(err.message);
@@ -121,7 +121,7 @@ export const NewCollection = ({ onCancel, onSuccess }) => {
             name="tags"
             value={formik.values.tags}
             onChange={formik.handleChange}
-            placeholder="Enter tags"
+            placeholder="tag1, tag2, ..."
             className="input-box-container input-reset"
           />
           {formik.errors.tags && formik.touched.tags && (

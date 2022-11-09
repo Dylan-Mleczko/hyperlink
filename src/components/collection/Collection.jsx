@@ -57,6 +57,7 @@ export const Collection = ({ collection, handleEdit, favouriteCollection }) => {
           <img
             loading="lazy"
             onClick={redirectToCollectionPage}
+            id={collection._id + 'img'}
             src={
               collection.image
                 ? `${baseDevelopmentURL}/collection/image/${collection._id}`
