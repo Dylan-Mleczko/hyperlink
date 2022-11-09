@@ -67,6 +67,7 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
           const collection = response.data.data.collection;
           console.log(collection);
           onSuccess().then();
+          document.getElementById(data._id + 'img').src = values.image;
           setIsUploading(false);
         })
         .catch((err) => {
@@ -121,7 +122,7 @@ export const EditCollectionForm = ({ onCancel, onSuccess, data }) => {
             name="tags"
             value={formik.values.tags}
             onChange={formik.handleChange}
-            placeholder="Enter tags"
+            placeholder="tag1, tag2, ..."
             className="input-box-container input-reset"
           />
           {formik.errors.tags && formik.touched.tags && (

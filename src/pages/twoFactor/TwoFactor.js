@@ -75,7 +75,7 @@ const TwoFactor = (props) => {
       <div className="details-container">
         <main className="details-main">
           <div className="measure">
-            <h1 className="details-title ">Enter Sign Up code</h1>
+            <h1 className="details-title ">Enter code sent to your email</h1>
             <form onSubmit={formik.handleSubmit}>
               <div className="mv3">
                 <label className="black">Code</label>
