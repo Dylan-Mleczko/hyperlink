@@ -19,6 +19,9 @@ const Collections = () => {
   const [displayLink, setDisplayLink] = useState({});
   const [isNewLink, setIsNewLink] = useState(false);
 
+  const sortEnum = Object.freeze({ recent: 0, frequency: 1, created: 2 });
+  const [sortMethod, setSortMethod] = useState(sortEnum.recent);
+
   // const [itemsLoaded, setItemsLoaded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -146,6 +149,22 @@ const Collections = () => {
     // displayButton
   };
 
+  function handleSortOnRecent() {
+    setLinks([...links].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)));
+    setSortMethod(sortEnum.recent);
+  }
+
+  function handleSortOnFrequency() {
+    setLinks([...links].sort((a, b) => b.click_count - a.click_count));
+    setSortMethod(sortEnum.frequency);
+  }
+
+  function handleSortOnCreation() {
+    setLinks([...links].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
+
+    setSortMethod(sortEnum.created);
+  }
+
   return (
     <div className="body">
       <Header />
@@ -153,10 +172,35 @@ const Collections = () => {
       <div className="fix-padding"></div>
       {/* <div className="d-flex justify-content-center"> */}
       <div className="content">
-        <Title text={collection.name} />
-        <div className="new-link-button-container">
-          <button onClick={newLinkOnclick} className="new-link-button">
-            + Add
+        <Title text={collection.name} isCollectionPage={true} collection={collection} />
+        <div className="action-container">
+          <div className="dropdown">
+            <button
+              className="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Sort By
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button className="dropdown-item" onClick={() => handleSortOnFrequency()}>
+                Most Frequent
+              </button>
+              <button className="dropdown-item" onClick={() => handleSortOnRecent()}>
+                Last Used
+              </button>
+              <button className="dropdown-item" onClick={() => handleSortOnCreation()}>
+                Date Created
+              </button>
+            </div>
+          </div>
+
+          <button className="btn btn-secondary" onClick={newLinkOnclick}>
+            + New Collection
           </button>
         </div>
         {isNewLink ? (

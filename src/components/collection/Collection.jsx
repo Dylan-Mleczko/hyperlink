@@ -55,6 +55,7 @@ export const Collection = ({ collection, handleEdit, favouriteCollection }) => {
           }}
         >
           <img
+            className="collection-img"
             loading="lazy"
             onClick={redirectToCollectionPage}
             id={collection._id + 'img'}

@@ -20,3 +20,39 @@
 
   color: #f9f6f6;
 }
+
+.collection-title-box {
+  box-sizing: border-box;
+  position: relative;
+
+  height: 200px;
+  /* padding: 20px; */
+  margin: 20px;
+
+  /* background: #75bf7a; */
+  border: 1.5px solid #262626;
+  border-radius: 10px;
+  font-size: large;
+}
+
+.textBox {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+
+.titleImage {
+  width: 100%;
+  height: 100%;
+  opacity: 50%;
+}
+.collection-title-box img {
+  object-fit: cover;
+}
+
+.descriptionText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 1rem;
+}
