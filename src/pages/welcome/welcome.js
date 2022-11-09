@@ -69,7 +69,7 @@ const Welcome = () => {
               <div>
                 <h1 className="heading-title font-semi-bold">View your websites</h1>
                 <p className="welcomeText">
-                  All your websites are arrnaged in a tabular manner for easy access
+                  All your websites are arranged in a tabular manner for easy access
                 </p>
               </div>
             </LightSpeed>
