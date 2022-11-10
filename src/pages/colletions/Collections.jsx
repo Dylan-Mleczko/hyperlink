@@ -200,7 +200,7 @@ const Collections = () => {
           </div>
 
           <button className="btn btn-secondary" onClick={newLinkOnclick}>
-            + New Collection
+            + New Link
           </button>
         </div>
         {isNewLink ? (
